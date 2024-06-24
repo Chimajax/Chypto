@@ -225,7 +225,7 @@
         }
 
         // Function to connect to Socket.IO server
-        const socket = io('http://localhost:3000'); // Replace with your Socket.IO server URL
+        const socket = io('https://broad-scalloped-sandpaper.glitch.me'); // Replace with your Socket.IO server URL
 
         // Listen for 'coinBalance' updates from the server
         socket.on('coinBalance', (balance) => {
@@ -235,7 +235,7 @@
         // Function to update coin balance on backend
         const updateCoinBalanceOnServer = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/coins', {
+                const response = await fetch('https://broad-scalloped-sandpaper.glitch.me', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
