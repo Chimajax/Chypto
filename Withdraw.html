@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdrawal Page</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: rgb(94,118,211);
+            background: linear-gradient(90deg, rgba(94,118,211,1) 34%, rgba(0,212,255,1) 63%, rgba(94,118,211,1) 71%);
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        .page-content {
+            transition: filter 0.3s; /* Add transition for smooth blur effect */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        .blur {
+            filter: blur(5px); /* Adjust the blur amount as needed */
+        }
+
+        .withdraw-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        input[type="text"], input[type="email"], input[type="number"] {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #ddd;
+            color: white;
+        }
+
+        input[type="text"]::placeholder, input[type="email"]::placeholder, input[type="number"]::placeholder {
+            color: white;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Dialog box */
+        .dialog-box {
+            display: none;
+            position: fixed;
+            z-index: 2; /* Ensures it stays on top of the blurred background */
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 139, 0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .dialog-box.active {
+            display: block;
+            filter: none; /* Add this rule to remove blur effect from dialog box */
+        }
+
+        .dialog-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #0099cc;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .dialog-button:hover {
+            background-color: #007399;
+        }
+
+        @media screen and (max-width: 800px) {
+            .withdraw-container {
+                width: calc(100% - 20px); /* 10px less on each side */
+                padding: 30px;
+                margin: 0 30px;
+                padding-right: 20px;
+                left: 50%;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            label {
+                font-size: 14px;
+            }
+
+            input[type="text"], input[type="email"], input[type="number"] {
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            input[type="submit"] {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+
+            .dialog-box {
+                width: calc(100% - 40px); /* 20px less on each side */
+                padding: 15px;
+            }
+
+            .dialog-button {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-content">
+        <div class="withdraw-container">
+            <h1>Withdrawal Form</h1>
+            <form action="your_server_endpoint" method="post">
+                <label for="first-name">First Name</label>
+                <input type="text" id="first-name" name="first_name" required>
+
+                <label for="last-name">Last Name</label>
+                <input type="text" id="last-name" name="last_name" required>
+
+                <label for="telegram-username">Telegram Username</label>
+                <input type="text" id="telegram-username" name="telegram_username" required>
+
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="litecoin-address">Litecoin Address</label>
+                <input type="text" id="litecoin-address" name="litecoin_address" required>
+
+                <label for="withdraw-amount">Withdraw Amount</label>
+                <input type="number" id="withdraw-amount" name="withdraw_amount" min="700000" placeholder="Min 700,000" required>
+
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+
+    <div id="comingSoonDialog" class="dialog-box">
+        <p>Coming Soon</p>
+        <p>Go Earn More</p>
+        <a href="Task.html"><button class="dialog-button">Follow Our Socials</button></a>
+    </div>
+
+    <script>
+        const showDialog = true; // Set this to false to disable the dialog box
+
+        window.onload = function() {
+            if (showDialog) {
+                document.getElementById('comingSoonDialog').classList.add('active');
+                document.querySelector('.page-content').classList.add('blur');
+            }
+        }
+
+        // Remove blur effect when dialog is closed (if you plan to add a close functionality in future)
+        function closeDialog() {
+            document.getElementById('comingSoonDialog').classList.remove('active');
+            document.querySelector('.page-content').classList.remove('blur');
+        }
+    </script>
+</body>
+</html>

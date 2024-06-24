@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referral Page</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: rgb(94,118,211);
+            background: linear-gradient(90deg, rgba(94,118,211,1) 34%, rgba(0,212,255,1) 63%, rgba(94,118,211,1) 71%);
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        #referralContainer {
+            text-align: center;
+            background: none;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: white; /* Set text color to white */
+        }
+
+        .referralButton {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .referralButton:hover {
+            background-color: #45a049;
+        }
+
+        #referralLink {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        #referralList {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .referralItem {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        #buttonContainer {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px; /* Space between buttons */
+            margin-top: 40px;
+        }
+
+        .gameButton {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .gameButton:hover {
+            background-color: #333;
+        }
+
+        .copylinkk {
+        background-color: #45a049;
+            color: #fff;
+            border: #fff;
+            border-radius: 5px;
+            padding: 5px 7px;
+        }
+
+        @media screen and (max-width: 800px) {
+            body {
+                padding: 10px;
+            }
+
+            #referralContainer {
+                padding: 10px;
+            }
+
+            .referralButton {
+                width: 100%;
+                padding: 15px;
+                font-size: 18px;
+            }
+
+            #buttonContainer {
+                bottom: 10px; /* Adjust bottom position */
+                margin-top: 20px; /* Adjust margin-top */
+            }
+
+            .gameButton {
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="referralContainer">
+        <h1>Referral Page</h1>
+        <button class="referralButton" id="generateLinkButton">Generate Referral Link</button>
+        <div id="referralLink">Your referral link will appear here.</div>
+        <button id="copyLinkButton" class="copylinkk" style="display: none;">Copy Link</button>
+        <h2>Your Referrals</h2>
+        <div id="referralList">
+            <!-- List of referrals will appear here -->
+        </div>
+    </div>
+    <div id="buttonContainer">
+        <a href="Referral.html"><button class="gameButton">REFER</button></a>
+        <a href="index.html"><button class="gameButton">TAP</button></a>
+        <a href="Boost.html"><button class="gameButton">BOOST</button></a>
+        <a href="Withdraw.html"><button class="gameButton">TASK</button></a>
+    </div>
+    <script>
+        const generateLinkButton = document.getElementById('generateLinkButton');
+        const referralLink = document.getElementById('referralLink');
+        const copyLinkButton = document.getElementById('copyLinkButton');
+        const referralList = document.getElementById('referralList');
+
+        generateLinkButton.addEventListener('click', () => {
+            const botUsername = "@Chypto_Official_Bot";
+            const link = `https://t.me/${botUsername}`;
+            referralLink.textContent = link;
+            referralLink.style.color = 'white';
+            copyLinkButton.style.display = 'inline-block';
+        });
+
+        copyLinkButton.addEventListener('click', () => {
+            const linkText = referralLink.textContent;
+            navigator.clipboard.writeText(linkText)
+                .then(() => {
+                    console.log('Link copied to clipboard!');
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+        });
+
+        // Simulate fetching referral list (you would replace this with your backend call)
+        const referrals = ['XXXXXX', 'XXXXXX', 'empty'];
+        referrals.forEach(referral => {
+            const referralItem = document.createElement('div');
+            referralItem.className = 'referralItem';
+            referralItem.textContent = referral;
+            referralList.appendChild(referralItem);
+        });
+    </script>
+</body>
+</html>

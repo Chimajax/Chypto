@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Page</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background: rgb(94, 118, 211);
+            background: linear-gradient(90deg, rgba(94, 118, 211, 1) 34%, rgba(0, 212, 255, 1) 63%, rgba(94, 118, 211, 1) 71%);
+            font-family: Arial, sans-serif;
+            color: white;
+            padding: 10px;
+            overflow-x: hidden; /* Disable horizontal scrolling */
+        }
+
+       .task-container,.withdraw-container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+       .task {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+
+       .task-name {
+            font-size: 18px;
+            font-weight: bold;
+            flex: 1; /* Ensures the name takes all available space */
+            white-space: nowrap; /* Prevents long names from wrapping */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Shows ellipsis (...) for overflow */
+        }
+
+       .task-coins {
+            font-size: 16px;
+            color: white;
+            margin-top: 35px; /* Add some space between the task name and reward */
+            margin-right: 250px;
+        }
+
+       .task button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+       .task button.disabled {
+            background-color: #ccc;
+            cursor: default;
+        }
+
+       .task button.go {
+            background-color: #0099cc;
+        }
+
+       .withdraw-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+        }
+
+       .withdraw h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+       .withdraw p {
+            font-size: 16px;
+            color: #ddd;
+        }
+
+       .withdraw button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+       .withdraw button:hover {
+            background-color: #45a049;
+        }
+
+        /* Mid-page dialog box */
+       .mid-page-dialog {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+       .mid-page-dialog.active {
+            display: block;
+        }
+
+       .dialog-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #0099cc;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+       .dialog-button:hover {
+            background-color: #007399;
+        }
+
+        /* Button Container */
+        #buttonContainer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px; /* Space between buttons */
+            margin-top: 40px;
+        }
+
+       .gameButton {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+       .wtd {
+            margin-right: 75px;
+        }
+
+       .task-reward {
+            font-size: 12px;
+            color: white;
+            margin-top: 5px; /* Add some space between the task name and reward */
+        }
+
+        @media screen and (max-width: 800px) {
+           .task-container,.withdraw-container {
+                width: calc(100% - 20px); /* 10px less on each side */
+                padding: 10px;
+            }
+
+           .task {
+                padding: 8px;
+                flex-wrap: wrap; /* Allow tasks to wrap on smaller screens */
+            }
+
+           .task-name,.task-coins,.withdraw h1,.withdraw p {
+                font-size: 14px;
+            }
+
+            #buttonContainer {
+                bottom: 10px; /* Adjust bottom position */
+                margin-top: 20px; /* Adjust margin-top */
+            }
+
+           .gameButton {
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="task-container">
+        <h1>Follow Our Socials</h1>
+        <div class="task" id="youtubeTask">
+            <div class="task-name">Subscribe to YouTube Channel</div>
+            <div class="task-reward">Earn 25000 coins</div>
+            <button onclick="startTask('youtube')" id="youtubeButton">Go</button>
+        </div>
+        
+        <div class="task" id="xTask">
+            <div class="task-name">Follow Us on X</div>
+            <div class="task-reward">Earn 20000 coins</div>
+            <button onclick="startTask('x')" id="xButton">Go</button>
+        </div>
+        
+        <div class="task" id="telegramTask">
+            <div class="task-name">Follow Our Telegram Channel</div>
+            <div class="task-reward">Earn 15000 coins</div>
+            <button onclick="startTask('telegram')" id="telegramButton">Go</button>
+        </div>
+    </div>
+
+    <div class="task-container">
+        <h1>Check Socials</h1>
+        <div class="task" id="youtubeCheckTask">
+            <div class="task-name">Youtube Rewards</div>
+            <button onclick="openSocial('youtube')">Go</button>
+        </div>
+        <div class="task" id="xCheckTask">
+            <div class="task-name">X Rewards</div>
+            <button onclick="openSocial('x')">Go</button>
+        </div>
+        <div class="task" id="telegramCheckTask">
+            <div class="task-name">Telegram Channel Rewards</div>
+            <button onclick="openSocial('telegram')">Go</button>
+        </div>
+    </div>
+
+    <div class="withdraw-container">
+        <h1 class="wtd">Withdraw</h1>
+        <div class="task">
+            <div class="task-name">Withdraw your earned coins</div>
+            <a href="Withdraw.html"><button>Go</button></a> <!-- Link to your Withdraw.html page -->
+        </div>
+    </div>
+
+    <!-- Mid-page dialog for "Not Enough Coins" -->
+    <div id="notEnoughCoinsDialog" class="mid-page-dialog">
+        <p>Not Enough Coins</p>
+        <button class="dialog-button" onclick="closeMidPageDialog()">Okay</button>
+    </div>
+
+    <div id="buttonContainer">
+        <a href="Referral.html"><button class="gameButton">REFER</button></a>
+        <a href="index.html"><button class="gameButton">TAP</button></a>
+        <a href="Boost.html"><button class="gameButton">BOOST</button></a>
+        <button class="gameButton disabled">TASK</button>
+    </div>
+
+    <script>
+        // Function to start a task and handle completion
+        function startTask(platform) {
+            switch (platform) {
+                case 'youtube':
+                    window.open('https://www.youtube.com/@Chypto', '_blank');
+                    setTimeout(() => {
+                        completeTask('youtube', 25000);
+                    }, 90000);
+                    break;
+                case 'x':
+                    window.open('http://X.com/@Chypto_Official', '_blank');
+                    setTimeout(() => {
+                        completeTask('x', 20000);
+                    }, 90000);
+                    break;
+                case 'telegram':
+                    window.open('https://t.me/chyptochannel', '_blank');
+                    setTimeout(() => {
+                        completeTask('telegram', 15000);
+                    }, 90000);
+                    break;
+                default:
+                    console.error('Unknown platform');
+            }
+        }
+
+        // Function to mark a task as completed and handle reward
+        function completeTask(task, reward) {
+            console.log(`Completing task: ${task} with reward: ${reward}`);
+
+            const taskElement = document.querySelector(`.task#${task}Task`);
+            if (taskElement && taskElement.parentNode) {
+                taskElement.remove();
+                console.log(`Removed task element: ${task}Task`);
+            } else {
+                console.log(`Task element already removed: ${task}Task`);
+            }
+
+            // Send reward to backend
+            const url = 'http://localhost:3000/updateBalance';
+            const data = {
+                task: task,
+                reward: reward
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+           .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                console.log(`Reward of ${reward} coins sent to backend successfully.`);
+            })
+           .catch(error => {
+                console.error('Error sending reward to backend:', error);
+            });
+
+            // Store completion status in local storage
+            localStorage.setItem(task, 'completed');
+        }
+
+        // Function to open social media links
+        function openSocial(platform) {
+            switch (platform) {
+                case 'youtube':
+                    window.open('https://www.youtube.com/@Chypto', '_blank');
+                    break;
+                case 'x':
+                    window.open('http://X.com/@Chypto_Official', '_blank');
+                    break;
+                case 'telegram':
+                    window.open('https://t.me/chyptochannel', '_blank');
+                    break;
+                default:
+                    console.error('Unknown platform');
+            }
+        }
+
+        // Function to open the "Not Enough Coins" dialog
+        function openMidPageDialog() {
+            document.getElementById('notEnoughCoinsDialog').classList.add('active');
+        }
+
+        // Function to close the "Not Enough Coins" dialog
+        function closeMidPageDialog() {
+            document.getElementById('notEnoughCoinsDialog').classList.remove('active');
+        }
+
+        // Initialize completed tasks from local storage
+        document.addEventListener('DOMContentLoaded', () => {
+            const tasks = ['youtube', 'x', 'telegram'];
+            tasks.forEach(task => {
+                if (localStorage.getItem(task) === 'completed') {
+                    completeTask(task);
+                }
+            });
+        });
+
+        // Function to clear local storage (for testing purposes)
+        const clearStorage = () => {
+            localStorage.clear();
+        };
+
+        // Uncomment to clear localStorage for testing purposes
+        // clearStorage();
+
+       /*
+        function clearLocalStorage() {
+            localStorage.clear();
+            console.log('Local storage cleared.');
+        }
+        */
+    </script>
+</body>
+</html>
