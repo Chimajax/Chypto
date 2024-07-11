@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicker Game</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: rgb(94, 118, 211);
+            background: linear-gradient(90deg, rgba(94, 118, 211, 1) 34%, rgba(0, 212, 255, 1) 63%, rgba(94, 118, 211, 1) 71%);
+            font-family: Arial, sans-serif;
+        }
+
+        #gameContainer {
+            text-align: center;
+            position: relative;
+            margin-top: 100px;
+            height: 100vh;
+            padding-right: 150px;
+            padding-left: 50px;
+        }
+
+        #score {
+            position: absolute;
+            margin-bottom: 150px;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 30px;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            margin-left: 45px;
+        }
+
+        .coin_score {
+            width: 20px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .coin {
+            width: 350px;
+            height: 350px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin-top: 210px;
+            padding-left: 100px;
+            outline: none;
+        }
+
+        .scoreEffect {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translate(-50%, -150%);
+            font-size: 20px;
+            color: #000000;
+            opacity: 0;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            pointer-events: none;
+        }
+
+        #energyBarContainer {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 25%;
+            background-color: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #energyBar {
+            height: 30px;
+            width: 100%;
+            background-color: #4CAF50;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            font-weight: bold;
+        }
+
+        #buttonContainer {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            margin-top: 40px;
+        }
+
+        .gameButton {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        h1 {
+            color: #fff;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        @media screen and (max-width: 800px) {
+            body {
+                padding: 10px;
+            }
+
+            #gameContainer {
+                padding: 10px;
+            }
+
+            #score {
+                top: 20px;
+                margin-left: 10px;
+            }
+
+            .coin {
+                margin-top: 100px;
+                padding-left: 50px;
+                width: 400px;
+                height: 400px;
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                margin-top: 70px;
+                padding-left: 10px;
+            }
+
+            #coinImage {
+                outline: none;
+            }
+
+            #coinImage:active {
+                transform: scale(1.05);
+                outline: none;
+            }
+
+            .scoreEffect {
+                transform: translate(-50%, -200%);
+            }
+
+            #energyBarContainer {
+                bottom: 80px;
+                width: 65%;
+            }
+
+            #buttonContainer {
+                bottom: 10px;
+                margin-top: 20px;
+            }
+
+            .gameButton {
+                padding: 10px 15px;
+            }
+
+            h1 {
+                top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Tap to Earn</h1>
+    <div id="gameContainer">
+        <div id="score">
+            <img src="coin_score_use.png" class="coin_score" style="width: 20%; height: 35%;" />
+            <span id="coinValue">10000</span>
+        </div>
+        <div class="coin">
+            <img src="Coin_Picture_Chinedu.png" alt="Coin" id="coinImage" style="width: 100%; height: 100%;">
+        </div>
+        <div class="scoreEffect" id="scoreEffect">+1</div>
+    </div>
+    <div id="energyBarContainer">
+        <div id="energyBar">1000/1000</div>
+    </div>
+    <div id="buttonContainer">
+        <a href="Referral.html"><button class="gameButton">REFER</button></a>
+        <a href="index.html"><button class="gameButton">TAP</button></a>
+        <a href="Boost.html"><button class="gameButton" onclick="activateBoost('tap')">BOOST</button></a>
+        <a href="Task.html"><button class="gameButton">TASK</button></a>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script defer src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js"></script>
+
+    <!-- Initialize Firebase -->
+    <script defer>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC4WE_3KwvarltOhr4WTwiZOwmyNloBq7U",
+            authDomain: "chypto-a2a7b.firebaseapp.com",
+            projectId: "chypto-a2a7b",
+            storageBucket: "chypto-a2a7b.appspot.com",
+            messagingSenderId: "437431758705",
+            appId: "1:437431758705:web:153b175d32b2d28cfd50d0",
+            measurementId: "G-HZM4DSTL3N"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <!-- Socket.IO script -->
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <script>
+        const scoreEffect = document.getElementById('scoreEffect');
+        const coinValue = document.getElementById('coinValue');
+        let energy = 1000; // Initial energy value
+        const maxEnergy = 1000; // Maximum energy value
+
+        // Function to update UI with fetched coin balance
+        function updateCoinBalance(balance) {
+            coinValue.textContent = Math.floor(balance); // Update coin balance as integer
+        }
+
+        // Function to update energy bar
+        function updateEnergyBar() {
+            const energyPercentage = (energy / maxEnergy) * 100;
+            document.getElementById('energyBar').style.width = `${energyPercentage}%`;
+            document.getElementById('energyBar').textContent = `${energy}/${maxEnergy}`;
+        }
+
+        // Function to connect to Socket.IO server
+        const socket = io('https://broad-scalloped-sandpaper.glitch.me'); // Replace with your Socket.IO server URL
+
+        // Listen for 'coinBalance' updates from the server
+        socket.on('coinBalance', (balance) => {
+            updateCoinBalance(balance);
+        });
+
+        // Function to update coin balance on Firebase
+        const updateCoinBalanceOnFirebase = async () => {
+            try {
+                await firebase.firestore().collection('users').doc('user1').update({
+                    balance: parseInt(coinValue.textContent)
+                });
+            } catch (error) {
+                console.error('Error updating coin balance:', error);
+            }
+        };
+
+        // Event listener for clicking the coin to earn
+        const coinElement = document.getElementById('coinImage');
+        coinElement.addEventListener('click', () => {
+            // Simulate coin earning by increasing the displayed balance
+            let currentBalance = parseFloat(coinValue.textContent);
+            currentBalance += 3;
+            coinValue.textContent = Math.floor(currentBalance); // Update coin balance as integer
+
+            // Update coin balance on Firebase
+            updateCoinBalanceOnFirebase();
+
+            // Show score effect
+            scoreEffect.style.opacity = '1';
+            scoreEffect.style.transform = 'translate(-50%, -200%)';
+            setTimeout(() => {
+                scoreEffect.style.opacity = '0';
+                scoreEffect.style.transform = 'translate(-50%, -150%)';
+            }, 500);
+
+            // Decrease energy when clicking the coin
+            if (energy > 0) {
+                energy -= 1;
+                updateEnergyBar();
+            }
+        });
+
+        // Replenish energy by 1 per second
+        setInterval(() => {
+            if (energy < maxEnergy) {
+                energy += 1;
+                updateEnergyBar();
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
