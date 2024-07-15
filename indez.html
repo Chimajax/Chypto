@@ -157,12 +157,15 @@
                 transform: scale(1.05);
                 outline: none;
             }
-            #coinImage:focus-visible {
-                 outline: none;
-           
+            #coinImage {
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
 
-  -webkit-tap-highlight-color: transparent;
-            }
+#coinImage:active,
+#coinImage:focus {
+    outline: none;
+}
                 
             .scoreEffect {
                 transform: translate(-50%, -200%);
