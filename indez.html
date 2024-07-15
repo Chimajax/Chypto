@@ -16,10 +16,6 @@
             font-family: Arial, sans-serif;
         }
 
-        img:focus, img:active {
-            outline: none
-        }
-
         #gameContainer {
             text-align: center;
             position: relative;
@@ -115,15 +111,6 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            outline: none;
-            box-shadow: none;
-        }
-
-        .gameButton:focus,
-        .gameButton:active,
-        .gameButton:hover {
-            outline: none;
-            box-shadow: none;
         }
 
         h1 {
@@ -133,9 +120,10 @@
             left: 50%;
             transform: translateX(-50%);
         }
-
-        #coinImage {
+        
+        #coinImage, #coinImage:active {
             outline: none;
+            outline-color: transparent;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -143,7 +131,6 @@
         #coinImage:focus,
         #coinImage:focus-visible {
             outline: none;
-            box-shadow: none;
         }
 
         @media screen and (max-width: 800px) {
@@ -163,8 +150,8 @@
             .coin {
                 margin-top: 100px;
                 padding-left: 50px;
-                width: 320px;
-                height: 320px;
+                width: 350px;
+                height: 350px;
                 position: relative;
                 display: flex;
                 justify-content: center;
@@ -179,31 +166,13 @@
                 outline: none;
             }
 
-            #coinImage:active {
+            #coinImage:active, .coin:active {
                 transform: scale(1.05);
                 outline: none;
                 outline-color: transparent;
-                box-shadow: none;
-                color: transparent;
             }
-            #coinImage {
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        #coinImage:active,
-        #coinImage:focus,
-        #coinImage:focus-visible {
-            outline: none;
-            outline-color: transparent;
-            box-shadow: none;
-            background-color: #fff;
-        }
-
-            img:focus, img:active {
-            outline: none
-        }
-
+            
+                
             .scoreEffect {
                 transform: translate(-50%, -200%);
             }
