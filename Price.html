@@ -1,1 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boost Page</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background: rgb(94,118,211);
+            background: linear-gradient(90deg, rgba(94,118,211,1) 34%, rgba(0,212,255,1) 63%, rgba(94,118,211,1) 71%);
+            font-family: Arial, sans-serif;
+            color: white;
+        }
 
+        .boost-container {
+            width: 80%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 150px;
+        }
+
+        .boost {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+
+        .boost-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .boost-cost {
+            font-size: 16px;
+            color: #ddd;
+        }
+
+        .activate-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .activate-btn.full {
+            background-color: #ccc;
+            cursor: default;
+        }
+
+        /* Mid-page dialog box */
+        .mid-page-dialog {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .mid-page-dialog.active {
+            display: block;
+        }
+
+        .dialog-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #0099cc;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .dialog-button:hover {
+            background-color: #007399;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #0099cc;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            border-radius: 10px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .close-btn {
+            background-color: white;
+            color: #0099cc;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #buttonContainer {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px; /* Space between buttons */
+            margin-top: 40px;
+        }
+
+        .gameButton {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+       .Button1 {
+            padding: 10px 20px;
+            background-color: rgb(190, 190, 21);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            pointer-events: none;
+        }
+
+        @media screen and (max-width: 800px) {
+            .boost-container {
+                width: 95%;
+                padding: 10px;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+
+            #buttonContainer {
+                bottom: 10px; /* Adjust bottom position */
+                margin-top: 20px; /* Adjust margin-top */
+            }
+
+            .gameButton {
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Current Price</h1>
+    <div class="boost-container">
+        <div class="boost" id="boostTap">
+            <div>
+                <div class="boost-name">+1 Tap</div>
+                <div class="boost-cost" id="boostTapCost">Cost: 5000 coins</div>
+            </div>
+            <button class="activate-btnX Button1" onclick="activateBoost('tap')">Activate</button>
+        </div>
+      <!--  <div class="boost" id="boostEnergy">
+            <div>
+                <div class="boost-name">Energy Increase</div>
+                <div class="boost-cost" id="boostEnergyCost">Cost: 5000 coins</div>
+            </div>
+            <button class="activate-btnX Button1" onclick="activateBoost('energy')">Activate</button>
+        </div>
+        <div class="boost" id="boostChargeSpeed">
+            <div>
+                <div class="boost-name">Charge Speed</div>
+                <div class="boost-cost" id="boostChargeSpeedCost">Cost: 15000 coins</div>
+            </div>
+            <button class="activate-btnX Button1" onclick="activateBoost('chargeSpeed')">Activate</button>
+        </div>
+        <div class="boost" id="boostCoinBot">
+            <div>
+                <div class="boost-name">Coin Bot</div>
+                <div class="boost-cost" id="boostCoinBotCost">Cost: 400000 coins</div>
+            </div>
+            <button class="activate-btn" onclick="activateBoost('coinBot')">Activate</button>
+        </div> -->
+    </div>
+
+    <!-- Mid-page dialog for "Not Enough Coins" -->
+    <div id="notEnoughCoinsDialog" class="mid-page-dialog">
+        <p>Not Enough Coins</p>
+        <button class="dialog-button" onclick="closeMidPageDialog()">Okay</button>
+    </div>
+
+    <!-- Modal -->
+    <div id="coinModal" class="modal">
+        <div class="modal-content">
+            <p>Not Enough Coins</p>
+            <button class="close-btn" onclick="closeModal()">Okay</button>
+        </div>
+    </div>
+
+    <div id="buttonContainer">
+      <!--  <a href="Referral.html"><button class="gameButton">REFER</button></a>
+        <a href="index.html"><button class="gameButton">TAP</button></a>
+        <a href="Boost.html"><button class="gameButton">BOOST</button></a> -->
+        <a href="Task.html"><button class="gameButton">TASK</button></a>
+    </div>
+
+    <script>
+        let tapCount = 0;
+        let energyCount = 0;
+        let chargeSpeedCount = 0;
+        let coinBotCount = 0;
+    
+        let storage = window.localStorage;
+    
+        function saveBoostState() {
+            storage.setItem('tapCount', tapCount);
+            storage.setItem('energyCount', energyCount);
+            storage.setItem('chargeSpeedCount', chargeSpeedCount);
+            storage.setItem('coinBotCount', coinBotCount);
+            storage.setItem('boostTapCost', document.getElementById('boostTapCost').textContent);
+            storage.setItem('boostEnergyCost', document.getElementById('boostEnergyCost').textContent);
+            storage.setItem('boostChargeSpeedCost', document.getElementById('boostChargeSpeedCost').textContent);
+            storage.setItem('boostCoinBotCost', document.getElementById('boostCoinBotCost').textContent);
+        }
+    
+        function loadBoostState() {
+            tapCount = parseInt(storage.getItem('tapCount')) || 0;
+            energyCount = parseInt(storage.getItem('energyCount')) || 0;
+            chargeSpeedCount = parseInt(storage.getItem('chargeSpeedCount')) || 0;
+            coinBotCount = parseInt(storage.getItem('coinBotCount')) || 0;
+            document.getElementById('boostTapCost').textContent = storage.getItem('boostTapCost') || 'Cost: 5000 coins';
+            document.getElementById('boostEnergyCost').textContent = storage.getItem('boostEnergyCost') || 'Cost: 5000 coins';
+            document.getElementById('boostChargeSpeedCost').textContent = storage.getItem('boostChargeSpeedCost') || 'Cost: 15000 coins';
+            document.getElementById('boostCoinBotCost').textContent = storage.getItem('boostCoinBotCost') || 'Cost: 400000 coins';
+        }
+    
+        loadBoostState();
+
+         // Function to clear localStorage for testing
+         const clearStorage = () => {
+            localStorage.clear();
+        };
+
+        // Uncomment to clear localStorage for testing purposes
+        // clearStorage();
+    
+        async function activateBoost(boostType) {
+            let url = `https://broad-scalloped-sandpaper.glitch.me`; // Replace with your backend endpoint
+            let costElement;
+            let currentCost;
+    
+            switch (boostType) {
+                case 'tap':
+                    costElement = document.getElementById('boostTapCost');
+                    break;
+                case 'energy':
+                    costElement = document.getElementById('boostEnergyCost');
+                    break;
+                case 'chargeSpeed':
+                    costElement = document.getElementById('boostChargeSpeedCost');
+                    break;
+                case 'coinBot':
+                    costElement = document.getElementById('boostCoinBotCost');
+                    break;
+                default:
+                    break;
+            }
+    
+            currentCost = parseInt(costElement.textContent.match(/\d+/)[0]);
+    
+            let requestBody = { type: boostType, cost: currentCost };
+    
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Failed to activate boost');
+                }
+    
+                const data = await response.json();
+    
+                if (data.success) {
+                    switch (boostType) {
+                        case 'tap':
+                            tapCount++;
+                            if (tapCount >= 15) {
+                                document.getElementById('boostTapCost').textContent = `Full`;
+                                document.getElementById('boostTap').querySelector('.activate-btn').classList.add('full');
+                                document.getElementById('boostTap').querySelector('.activate-btn').setAttribute('disabled', 'disabled');
+                            } else {
+                                currentCost *= 4; // Increase by 4 times
+                                document.getElementById('boostTapCost').textContent = `Cost: ${currentCost} coins`;
+                            }
+                            break;
+                        case 'energy':
+                            energyCount++;
+                            if (energyCount >= 15) {
+                                document.getElementById('boostEnergyCost').textContent = `Full`;
+                                document.getElementById('boostEnergy').querySelector('.activate-btn').classList.add('full');
+                                document.getElementById('boostEnergy').querySelector('.activate-btn').setAttribute('disabled', 'disabled');
+                            } else {
+                                currentCost *= 4; // Increase by 4 times
+                                document.getElementById('boostEnergyCost').textContent = `Cost: ${currentCost} coins`;
+                            }
+                            break;
+                        case 'chargeSpeed':
+                            chargeSpeedCount++;
+                            if (chargeSpeedCount >= 5) {
+                                document.getElementById('boostChargeSpeedCost').textContent = `Full`;
+                                document.getElementById('boostChargeSpeed').querySelector('.activate-btn').classList.add('full');
+                                document.getElementById('boostChargeSpeed').querySelector('.activate-btn').setAttribute('disabled', 'disabled');
+                            } else {
+                                currentCost *= 3; // Increase by 3 times
+                                document.getElementById('boostChargeSpeedCost').textContent = `Cost: ${currentCost} coins`;
+                            }
+                            break;
+                        case 'coinBot':
+                            coinBotCount++;
+                            if (coinBotCount >= 1) {
+                                document.getElementById('boostCoinBotCost').textContent = `Full`;
+                                document.getElementById('boostCoinBot').querySelector('.activate-btn').classList.add('full');
+                                document.getElementById('boostCoinBot').querySelector('.activate-btn').setAttribute('disabled', 'disabled');
+                            } else {
+                                currentCost += 400000; // One-off purchase
+                                document.getElementById('boostCoinBotCost').textContent = `Cost: ${currentCost} coins`;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+    
+                    // Save updated state and costs to localStorage
+                    saveBoostState();
+                } else {
+                    openMidPageDialog();
+                }
+            } catch (error) {
+                console.error('Error activating boost:', error);
+                openModal();
+            }
+        }
+    
+        function openMidPageDialog() {
+            document.getElementById('notEnoughCoinsDialog').classList.add('active');
+        }
+    
+        function closeMidPageDialog() {
+            document.getElementById('notEnoughCoinsDialog').classList.remove('active');
+        }
+    
+        function openModal() {
+            document.getElementById('coinModal').style.display = 'flex';
+        }
+    
+        function closeModal() {
+            document.getElementById('coinModal').style.display = 'none';
+        }
+    </script>
+    
+</body>
+</html>
+    
+    
+</body>
+</html>
