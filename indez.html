@@ -120,6 +120,17 @@
             left: 50%;
             transform: translateX(-50%);
         }
+        
+        #coinImage {
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #coinImage:active,
+        #coinImage:focus,
+        #coinImage:focus-visible {
+            outline: none;
+        }
 
         @media screen and (max-width: 800px) {
             body {
@@ -138,8 +149,8 @@
             .coin {
                 margin-top: 100px;
                 padding-left: 50px;
-                width: 300px;
-                height: 300px;
+                width: 320px;
+                height: 320px;
                 position: relative;
                 display: flex;
                 justify-content: center;
@@ -157,15 +168,7 @@
                 transform: scale(1.05);
                 outline: none;
             }
-            #coinImage {
-    outline: none;
-    -webkit-tap-highlight-color: transparent;
-}
-
-#coinImage:active,
-#coinImage:focus {
-    outline: none;
-}
+            
                 
             .scoreEffect {
                 transform: translate(-50%, -200%);
