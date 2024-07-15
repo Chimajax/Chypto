@@ -150,8 +150,8 @@
             .coin {
                 margin-top: 100px;
                 padding-left: 50px;
-                width: 320px;
-                height: 320px;
+                width: 350px;
+                height: 350px;
                 position: relative;
                 display: flex;
                 justify-content: center;
@@ -235,6 +235,11 @@
         function updateCoinBalance(balance) {
             coinValue.textContent = Math.floor(balance); // Update coin balance as integer
         }
+
+        // To remove blue color
+        document.getElementById("coinImage").addEventListener("mousedown", function() {
+        event.preventDefault();
+        });
 
         // Function to update energy bar
         function updateEnergyBar() {
