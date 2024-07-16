@@ -364,13 +364,13 @@
             }
         });
 
-        // Replenish energy by 1 per second
+        // Replenish energy by 1 per x second
         setInterval(() => {
             if (energy < maxEnergy) {
                 energy += 1;
                 updateEnergyBar();
             }
-        }, 1000);
+        }, 2500);
     </script>
 </body>
 </html>
