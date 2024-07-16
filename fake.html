@@ -293,7 +293,36 @@
     <input type="text" id="passcodeInput" placeholder="Enter passcode">
     <button id="passcodeSubmit">Submit</button>
     </div>
-    
+    <script>
+
+        document.getElementById("passcodeSubmit").addEventListener("click", function() {
+    const passcodeInput = document.getElementById("passcodeInput");
+    const passcode = passcodeInput.value;
+
+    if (passcode === "whale17") {
+        const currentBalance = parseInt(localStorage.getItem("balance") || "0");
+        const newBalance = currentBalance + 25000;
+        localStorage.setItem("balance", newBalance);
+        updateCoinBalance(newBalance);
+
+        localStorage.setItem("passcodeUsed", "true");
+        document.getElementById("passcodeContainer").style.display = "none";
+    } else {
+        passcodeInput.value = "";
+        alert("wrong passcode");
+    }
+});
+
+window.addEventListener("load", function() {
+    const passcodeUsed = localStorage.getItem("passcodeUsed");
+
+    if (passcodeUsed === "true") {
+        document.getElementById("passcodeContainer").style.display = "none";
+    }
+});
+
+
+    </script>
 
     <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
     <script>
