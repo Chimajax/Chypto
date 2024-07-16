@@ -295,9 +295,9 @@
             energyCount = parseInt(storage.getItem('energyCount')) || 0;
             chargeSpeedCount = parseInt(storage.getItem('chargeSpeedCount')) || 0;
             coinBotCount = parseInt(storage.getItem('coinBotCount')) || 0;
-            document.getElementById('boostTapCost').textContent = storage.getItem('boostTapCost') || 'Cost: 5000 coins';
-            document.getElementById('boostEnergyCost').textContent = storage.getItem('boostEnergyCost') || 'Cost: 5000 coins';
-            document.getElementById('boostChargeSpeedCost').textContent = storage.getItem('boostChargeSpeedCost') || 'Cost: 15000 coins';
+            document.getElementById('boostTapCost').textContent = storage.getItem('boostTapCost') || 'Cost: 50000 coins';
+            document.getElementById('boostEnergyCost').textContent = storage.getItem('boostEnergyCost') || 'Cost: 10000 coins';
+            document.getElementById('boostChargeSpeedCost').textContent = storage.getItem('boostChargeSpeedCost') || 'Cost: 1000 coins';
             document.getElementById('boostCoinBotCost').textContent = storage.getItem('boostCoinBotCost') || 'Cost: 400000 coins';
         }
     
@@ -310,7 +310,9 @@
 
         // Uncomment to clear localStorage for testing purposes
         // clearStorage();
-    
+    </script>
+
+     <!--   <script>
         async function activateBoost(boostType) {
             // let url = `https://broad-scalloped-sandpaper.glitch.me`; // Replace with your backend endpoint
             let costElement;
@@ -428,7 +430,7 @@
         function closeModal() {
             document.getElementById('coinModal').style.display = 'none';
         }
-    </script>
+    </script> -->
     
 </body>
 </html>
