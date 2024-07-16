@@ -273,17 +273,17 @@
             coinValue.textContent = Math.floor(balance); // Update coin balance as integer
         }
 
-        // To remove blue color
-        document.getElementById("coinImage").addEventListener("mousedown", function(event) {
-            event.preventDefault();
-        });
-
-        // Function to update energy bar
+        // Function to update UI with energy level
         function updateEnergyBar() {
             const energyPercentage = (energy / maxEnergy) * 100;
             document.getElementById('energyBar').style.width = `${energyPercentage}%`;
             document.getElementById('energyBar').textContent = `${energy}/${maxEnergy}`;
         }
+
+        // To remove blue color
+        document.getElementById("coinImage").addEventListener("mousedown", function(event) {
+            event.preventDefault();
+        });
 
         // Function to connect to Socket.IO server
         const socket = io('https://broad-scalloped-sandpaper.glitch.me'); // Replace with your Socket.IO server URL
@@ -332,6 +332,7 @@
             if (energy > 0) {
                 energy -= 1;
                 updateEnergyBar();
+                localStorage.setItem('energyLevel', energy); // Save energy level to localStorage
             }
         });
 
@@ -340,24 +341,25 @@
             if (energy < maxEnergy) {
                 energy += 1; // Increase energy by 1 every 1.5 seconds
                 updateEnergyBar();
+                localStorage.setItem('energyLevel', energy); // Save energy level to localStorage
             }
         }, 1500); // Interval set to 1.5 seconds
 
-        // Function to load saved coin balance from localStorage
+        // Function to load saved data from localStorage
         window.onload = () => {
             const savedBalance = localStorage.getItem('coinBalance');
+            const savedEnergy = localStorage.getItem('energyLevel');
+            
             if (savedBalance !== null) {
                 updateCoinBalance(parseFloat(savedBalance)); // Update balance with saved value
             }
+            if (savedEnergy !== null) {
+                energy = parseInt(savedEnergy); // Update energy with saved value
+                updateEnergyBar(); // Update energy bar UI
+            }
         };
 
-        // Function to clear local storage (uncomment the line below to clear local storage)
-        // function clearLocalStorage() {
-        //     localStorage.clear();
-        //     console.log('Local storage cleared');
-        // }
-
-       // Function to clear local storage (for testing purposes)
+        // Function to clear local storage (for testing purposes)
         const clearStorage = () => {
             localStorage.clear();
             alert('Data Cleared');
@@ -365,7 +367,6 @@
 
         // Uncomment to clear localStorage for testing purposes
         // clearStorage();
-        
     </script>
 </body>
 </html>
