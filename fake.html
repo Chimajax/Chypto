@@ -311,9 +311,9 @@
 
     if (passcode === "whale17") {
         //const currentBalance = parseInt(localStorage.getItem("balance") || "0");
-        const currentBalance = updateCoinBalance(balance);
+        let currentBalance = parseFloat(coinValue.textContent);
         const newBalance = currentBalance + 25000;
-        localStorage.setItem("balance", newBalance);
+        localStorage.setItem("coinBalance", newBalance);
         updateCoinBalance(newBalance);
 
         localStorage.setItem("passcodeUsed", "true");
