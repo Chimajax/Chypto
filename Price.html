@@ -137,7 +137,7 @@
         }
 
         #buttonContainer {
-            position: absolute;
+            position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
@@ -302,7 +302,7 @@
             energyCount = parseInt(storage.getItem('energyCount')) || 0;
             chargeSpeedCount = parseInt(storage.getItem('chargeSpeedCount')) || 0;
             coinBotCount = parseInt(storage.getItem('coinBotCount')) || 0;
-            document.getElementById('boostTapCost').textContent = storage.getItem('boostTapCost') || 'Cost: 80,000 coins';
+            document.getElementById('boostTapCost').textContent = storage.getItem('boostTapCost') || 'Cost: 85,000 coins';
             document.getElementById('boostEnergyCost').textContent = storage.getItem('boostEnergyCost') || 'Cost: 20,000 coins';
             document.getElementById('boostChargeSpeedCost').textContent = storage.getItem('boostChargeSpeedCost') || 'Cost: Free';
             document.getElementById('boostCoinBotCost').textContent = storage.getItem('boostCoinBotCost') || 'Cost: 40,000 coins';
