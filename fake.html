@@ -159,7 +159,6 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             margin-bottom: 5px;
             margin-top: 10px;
-            bottom: 9px;
             align-items: center;
             display: flex;
           }
@@ -186,7 +185,7 @@
 
            #passcodeContainer {
                width: 90%;
-               padding: 10px;
+               padding: 15px;
            }
             
             #myImage {
@@ -287,6 +286,12 @@
         </div>
         <div class="scoreEffect" id="scoreEffect">+1</div>
     </div>
+    
+    <div id="passcodeContainer">
+    <input type="text" id="passcodeInput" placeholder="Enter passcode">
+    <button id="passcodeSubmit">Submit</button>
+    </div>
+    
     <div id="energyBarContainer">
         <div id="energyBar">1000/1000</div>
     </div>
@@ -297,10 +302,7 @@
         <a href="Task.html"><button class="gameButton">TASK</button></a>
     </div>
 
-    <div id="passcodeContainer">
-    <input type="text" id="passcodeInput" placeholder="Enter passcode">
-    <button id="passcodeSubmit">Submit</button>
-    </div>
+    
     <script>
 
         document.getElementById("passcodeSubmit").addEventListener("click", function() {
