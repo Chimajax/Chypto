@@ -54,7 +54,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            
             margin-top: 210px;
             padding-left: 100px;
             outline: none;
@@ -103,7 +102,6 @@
             margin-top: 40px;
         }
 
-
         .gameButton {
             background-color: transparent;
             border: 2px solid white;
@@ -134,49 +132,47 @@
             outline: none;
         }
 
-	#myImage {
-		top: 0;
-		display:flex;
-	}
+        #myImage {
+            top: 0;
+            display: flex;
+        }
 
-	.Block {
-                     position: fixed;
-		       top: 0;
-		       height: 100vh;
-		       cursor: block;
-		       width: 100%;
-		       z-index: 890;
-		       box-shadow:  -10px 0 10px rgba(0, 0, 0, 0.1);
-		       display: flex;
-		       flex-direction: column;
-	        	align-items: flex-start;
-	        	justify-content: flex-start;
-                  }
+        .Block {
+            position: fixed;
+            top: 0;
+            height: 100vh;
+            cursor: block;
+            width: 100%;
+            z-index: 890;
+            box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
 
-
-	
         @media screen and (max-width: 800px) {
 
-		#myImage {
-		top: 0;
-		display:none;
-		width: 100%;
-		height: 90vh;
-	    }
+            #myImage {
+                top: 0;
+                display: none;
+                width: 100%;
+                height: 90vh;
+            }
 
             .Block {
-                     position: fixed;
-		       top: 0;
-		       height: 100vh;
-		       cursor: block;
-		       width: 100%;
-		       z-index: 890;
-		       box-shadow:  -10px 0 10px rgba(0, 0, 0, 0.1);
-		       display: none;
-		       flex-direction: column;
-	        	align-items: flex-start;
-	        	justify-content: flex-start;
-                  }
+                position: fixed;
+                top: 0;
+                height: 100vh;
+                cursor: block;
+                width: 100%;
+                z-index: 890;
+                box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+                display: none;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: flex-start;
+            }
             
             body {
                 padding: 10px;
@@ -200,7 +196,6 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                
                 margin-top: 70px;
                 padding-left: 10px;
                 outline-color: transparent;
@@ -218,9 +213,6 @@
                 background-color: transparent;
             }
 
-            
-            
-                
             .scoreEffect {
                 transform: translate(-50%, -200%);
             }
@@ -253,7 +245,7 @@
             <span id="coinValue">10000</span>
         </div>
         <img src="Block.jpg" class="Block" style="width: 100%; height:100;" />
-	<!-- <img src="StartPage.jpg" id="myImage" class="Start" style="width: 100%; height:100;" /> -->
+        <!-- <img src="StartPage.jpg" id="myImage" class="Start" style="width: 100%; height:100;" /> -->
         <div class="coin">
             <img src="Coin_Picture_Chypto.png" alt="Coin" id="coinImage" style="width: 100%; height: 100%;">
         </div>
@@ -269,24 +261,7 @@
         <a href="Task.html"><button class="gameButton">TASK</button></a>
     </div>
 
-    <!-- Socket.IO script -->
     <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
-
- <!-- <script>
- var image = document.createElement("img");
- image.src = "StartPage.jpg";
- image.style.position = "fixed";
- image.style.top = "0";
- image.style.left = "0";
- image.style.width= "100%";
- image.style.zIndex = "900";
- document.body.appendChild(image);
-
- setTimeout(function() {
- document.body.removeChild(image);
- }, 7000);
-</script> -->
-	
     <script>
         const scoreEffect = document.getElementById('scoreEffect');
         const coinValue = document.getElementById('coinValue');
@@ -299,8 +274,8 @@
         }
 
         // To remove blue color
-        document.getElementById("coinImage").addEventListener("mousedown", function() {
-        event.preventDefault();
+        document.getElementById("coinImage").addEventListener("mousedown", function(event) {
+            event.preventDefault();
         });
 
         // Function to update energy bar
@@ -328,28 +303,24 @@
                     },
                     body: JSON.stringify({ balance: parseInt(coinValue.textContent) })
                 });
-
                 if (!response.ok) {
                     throw new Error('Failed to update coin balance');
                 }
-
             } catch (error) {
                 console.error('Error updating coin balance:', error);
             }
         };
 
-        // Event listener for clicking the coin to earn
+        // Handle click on coin image
         const coinElement = document.getElementById('coinImage');
         coinElement.addEventListener('click', () => {
-            // Simulate coin earning by increasing the displayed balance
-            let currentBalance = parseFloat(coinValue.textContent);
-            currentBalance += 3;
-            coinValue.textContent = Math.floor(currentBalance); // Update coin balance as integer
+            let currentBalance = parseFloat(coinValue.textContent); // Get current balance
+            currentBalance += 3; // Add 3 to balance
+            coinValue.textContent = Math.floor(currentBalance); // Update coin balance in UI
+            updateCoinBalanceOnServer(); // Send updated balance to server
+            localStorage.setItem('coinBalance', currentBalance); // Save balance to localStorage
 
-            // Update coin balance on backend
-            updateCoinBalanceOnServer();
-
-            // Show score effect
+            // Show tap effect
             scoreEffect.style.opacity = '1';
             scoreEffect.style.transform = 'translate(-50%, -200%)';
             setTimeout(() => {
@@ -357,20 +328,34 @@
                 scoreEffect.style.transform = 'translate(-50%, -150%)';
             }, 500);
 
-            // Decrease energy when clicking the coin
+            // Decrease energy by 1 on each tap
             if (energy > 0) {
                 energy -= 1;
                 updateEnergyBar();
             }
         });
 
-        // Replenish energy by 1 per x second
+        // Function to gradually regenerate energy over time
         setInterval(() => {
             if (energy < maxEnergy) {
-                energy += 1;
+                energy += 1; // Increase energy by 1 every 1.5 seconds
                 updateEnergyBar();
             }
-        }, 1500);
+        }, 1500); // Interval set to 1.5 seconds
+
+        // Function to load saved coin balance from localStorage
+        window.onload = () => {
+            const savedBalance = localStorage.getItem('coinBalance');
+            if (savedBalance !== null) {
+                updateCoinBalance(parseFloat(savedBalance)); // Update balance with saved value
+            }
+        };
+
+        // Function to clear local storage (uncomment the line below to clear local storage)
+        // function clearLocalStorage() {
+        //     localStorage.clear();
+        //     console.log('Local storage cleared');
+        // }
     </script>
 </body>
 </html>
