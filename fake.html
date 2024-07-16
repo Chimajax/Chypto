@@ -310,7 +310,8 @@
     const passcode = passcodeInput.value;
 
     if (passcode === "whale17") {
-        const currentBalance = parseInt(localStorage.getItem("balance") || "0");
+        //const currentBalance = parseInt(localStorage.getItem("balance") || "0");
+        const currentBalance = updateCoinBalance(balance);
         const newBalance = currentBalance + 25000;
         localStorage.setItem("balance", newBalance);
         updateCoinBalance(newBalance);
