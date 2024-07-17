@@ -358,12 +358,16 @@
             }, 500);
 
             // Decrease energy by 1 on each tap
-            if (energy > 0) {
+              if (energy > 0) {
                 energy -= 1;
                 updateEnergyBar();
                 updateEnergyLevelOnServer(); // Send updated energy level to server
                 localStorage.setItem('energyLevel', energy); // Save energy level to localStorage
-            }
+                 } else {
+            coinElement.style.pointerEvents = 'none';
+            // alert("You have no energy left!");
+              }
+            
         });
 
         // Function to gradually regenerate energy over time
