@@ -176,13 +176,13 @@
                     withdrawAmount: withdrawAmount
                 };
 
-                fetch('https://api.telegram.org/bot<YourBotToken>/sendMessage', {
+                fetch('https://api.telegram.org/bot6428927157:AAHylUdL7piVI6qYwBBu_gPH7ERzt9JD7_I/sendMessage', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        chat_id: '<YourChatID>',
+                        chat_id: '1395717860',
                         text: `Withdraw Request:\nX Address: ${data.xAddress}\nTelegram Username: ${data.telegramUsername}\nReferral Link: ${data.referralLink}\nCoin Name: ${data.coinName}\nCoin Address: ${data.coinAddress}\nWithdraw Amount: ${data.withdrawAmount}`
                     })
                 }).then(response => {
