@@ -451,13 +451,16 @@ window.addEventListener("load", function() {
                 updateEnergyLevelOnServer(); // Send updated energy level to server
                 localStorage.setItem('energyLevel', energy); // Save energy level to localStorage
             }
-        });
 
-        // Disable coin clicking if energy reaches 0
+            // Disable coin clicking if energy reaches 0
         if (energy === 0) {
             coinElement.style.pointerEvents = 'none';
-            // alert("You have no energy left!");
+             alert("You have no energy left!");
         }
+            
+        });
+
+        
 
         // Function to gradually regenerate energy over time
         setInterval(() => {
