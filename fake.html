@@ -337,6 +337,14 @@ window.addEventListener("load", function() {
     }
 });
 
+        function clearPasscodeUsed() {
+    localStorage.removeItem('passcodeUsed');
+    alert('Passcode used has been cleared.');
+   }
+
+    // uncomment to clear passcodeUsed data
+    clearPasscodeUsed()
+
 
     </script>
 
@@ -472,7 +480,7 @@ window.addEventListener("load", function() {
         // Function to clear local storage (for testing purposes)
         const clearStorage = () => {
             localStorage.clear();
-            alert('Data Cleared');
+            //alert('Data Cleared');
         };
 
         // Uncomment to clear localStorage for testing purposes
