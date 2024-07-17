@@ -16,13 +16,8 @@
             font-family: Arial, sans-serif;
         }
 
-        input:required:invalid {
-background-color: #ffdddd; /* light pink background */
-border: 1px solid #ff0000; /* red border */
-}
-
-input:required:invalid + span {
-color: #ff0000; /* red text color */
+        input:invalid {
+  --error-color: blue;
 }
         
 #gameContainer {
