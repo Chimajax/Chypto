@@ -429,7 +429,6 @@ window.addEventListener("load", function() {
 
         // Handle click on coin image
         const coinElement = document.getElementById('coinImage');
-        if (energy > 0) {
             coinElement.addEventListener('click', () => {
             let currentBalance = parseFloat(coinValue.textContent); // Get current balance
             currentBalance += 3; // Add 3 to balance
@@ -446,11 +445,12 @@ window.addEventListener("load", function() {
             }, 500);
 
             // Decrease energy by 1 on each tap
+              if (energy > 0) {
                 energy -= 1;
                 updateEnergyBar();
                 updateEnergyLevelOnServer(); // Send updated energy level to server
                 localStorage.setItem('energyLevel', energy); // Save energy level to localStorage
-            
+                coinElement.style.pointerEvents = 'click';
             } else {
             coinElement.style.pointerEvents = 'none';
             // alert("You have no energy left!");
