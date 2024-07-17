@@ -23,6 +23,7 @@
             height: 100vh;
             padding-right: 150px;
             padding-left: 50px;
+            background-color: #fff;
         }
 
         #score {
@@ -128,6 +129,26 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 999;
         }
+        
+        #buttonContainer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px; /* Space between buttons */
+            margin-top: 40px;
+        }
+
+        .gameButton {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
         @media screen and (max-width: 800px) {
             form {
@@ -145,6 +166,15 @@
             .coin_score {
                 width: 30px;
                 height: 50px;
+            }
+
+            #buttonContainer {
+                bottom: 10px; /* Adjust bottom position */
+                margin-top: 20px; /* Adjust margin-top */
+            }
+
+            .gameButton {
+                padding: 10px 15px;
             }
         }
 
