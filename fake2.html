@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chypto</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: rgb(94, 118, 211);
+            background: linear-gradient(90deg, rgba(94, 118, 211, 1) 34%, rgba(0, 212, 255, 1) 63%, rgba(94, 118, 211, 1) 71%);
+            font-family: Arial, sans-serif;
+        }
+
+        #gameContainer {
+            text-align: center;
+            position: relative;
+            margin-top: 100px;
+            height: 100vh;
+            padding-right: 150px;
+            padding-left: 50px;
+        }
+
+        #score {
+            position: absolute;
+            margin-bottom: 150px;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 30px;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            margin-left: 45px;
+        }
+
+        .coin_score {
+            width: 20px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .dialog {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #0099cc;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .dialog p {
+            color: white;
+            font-size: 18px;
+            margin: 0 0 20px;
+        }
+
+        .dialog button {
+            padding: 10px 20px;
+            background-color: #006699;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .dialog button:hover {
+            background-color: #005580;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <div id="score">
+            <img src="coin_score_use.png" class="coin_score" style="width: 20%; height: 35%;" />
+            <span id="coinValue">7000</span>
+        </div>
+        <form id="withdrawForm">
+            <input type="text" id="xAddress" name="xAddress" placeholder="X Address" required>
+            <input type="text" id="telegramUsername" name="telegramUsername" placeholder="Telegram Username" required>
+            <input type="text" id="referralLink" name="referralLink" placeholder="Referral Link (optional)">
+            <input type="text" id="coinName" name="coinName" placeholder="Coin Name" required>
+            <input type="text" id="coinAddress" name="coinAddress" placeholder="Coin Address" required>
+            <input type="number" id="withdrawAmount" name="withdrawAmount" placeholder="Withdraw Amount" required>
+            <input type="submit" value="Withdraw">
+        </form>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="dialog" id="dialog">
+        <p>Not Enough Coins</p>
+        <button id="closeDialog">Ok</button>
+    </div>
+
+    <script>
+        const coinValue = document.getElementById('coinValue');
+        let balance = parseFloat(coinValue.textContent);
+
+        document.getElementById('withdrawForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const withdrawAmount = parseFloat(document.getElementById('withdrawAmount').value);
+
+            if (withdrawAmount > balance) {
+                document.getElementById('overlay').style.display = 'block';
+                document.getElementById('dialog').style.display = 'block';
+            } else {
+                balance -= withdrawAmount;
+                coinValue.textContent = Math.floor(balance);
+                localStorage.setItem('coinBalance', balance);
+
+                const formData = new FormData(event.target);
+                const data = {
+                    xAddress: formData.get('xAddress'),
+                    telegramUsername: formData.get('telegramUsername'),
+                    referralLink: formData.get('referralLink'),
+                    coinName: formData.get('coinName'),
+                    coinAddress: formData.get('coinAddress'),
+                    withdrawAmount: withdrawAmount
+                };
+
+                fetch('https://api.telegram.org/bot<YourBotToken>/sendMessage', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: '<YourChatID>',
+                        text: `Withdraw Request:\nX Address: ${data.xAddress}\nTelegram Username: ${data.telegramUsername}\nReferral Link: ${data.referralLink}\nCoin Name: ${data.coinName}\nCoin Address: ${data.coinAddress}\nWithdraw Amount: ${data.withdrawAmount}`
+                    })
+                }).then(response => {
+                    if (response.ok) {
+                        alert("Withdraw request sent successfully!");
+                    } else {
+                        alert("Failed to send withdraw request. Please try again.");
+                    }
+                }).catch(error => {
+                    console.error('Error sending withdraw request:', error);
+                    alert("Failed to send withdraw request. Please try again.");
+                });
+            }
+        });
+
+        document.getElementById('closeDialog').addEventListener('click', function() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('dialog').style.display = 'none';
+        });
+
+        // Load saved coin balance from localStorage
+        window.onload = () => {
+            const savedBalance = localStorage.getItem('coinBalance');
+            if (savedBalance !== null) {
+                balance = parseFloat(savedBalance);
+                coinValue.textContent = Math.floor(balance);
+            }
+        };
+    </script>
+</body>
+</html>
