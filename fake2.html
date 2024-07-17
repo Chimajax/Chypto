@@ -159,7 +159,7 @@
 
     <div class="overlay" id="overlay"></div>
     <div class="dialog" id="dialog">
-        <p>Not Enough Coins</p>
+        <p>Not Enough Coins. Your Balance is low</p>
         <button id="closeDialog">Ok</button>
     </div>
 
@@ -225,6 +225,16 @@
                 coinValue.textContent = Math.floor(balance);
             }
         };
+
+        // Function to clear local storage (for testing purposes)
+        const clearStorage = () => {
+            localStorage.clear();
+            alert('Data Cleared');
+        };
+
+        // Uncomment to clear localStorage for testing purposes
+        // clearStorage();
+        
     </script>
 </body>
 </html>
