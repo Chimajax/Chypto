@@ -5,139 +5,138 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chypto</title>
     <style>
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: rgb(94, 118, 211);
-            background: linear-gradient(90deg, rgba(94, 118, 211, 1) 34%, rgba(0, 212, 255, 1) 63%, rgba(94, 118, 211, 1) 71%);
-            font-family: Arial, sans-serif;
-        }
+        
+    body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: rgb(94, 118, 211);
+    background: linear-gradient(90deg, rgba(94, 118, 211, 1) 34%, rgba(0, 212, 255, 1) 63%, rgba(94, 118, 211, 1) 71%);
+    font-family: Arial, sans-serif;
+}
 
-        #gameContainer {
-            text-align: center;
-            position: relative;
-            margin-top: 100px;
-            height: 100vh;
-            padding-right: 150px;
-            padding-left: 50px;
-        }
+#gameContainer {
+    text-align: center;
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    box-sizing: border-box;
+}
 
-        #score {
-            position: absolute;
-            margin-bottom: 150px;
-            top: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 30px;
-            font-weight: bold;
-            padding: 5px 10px;
-            border-radius: 5px;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            margin-left: 45px;
-        }
+#score {
+    font-size: 30px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
 
-        .coin_score {
-            width: 20px;
-            height: 50px;
-            margin-right: 10px;
-        }
+.coin_score {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
 
-        form {
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 80%;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            margin-bottom: 20px;
-            margin-top: 40px;
-        }
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin: 0 auto;
+}
 
-        input[type="text"], input[type="number"] {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+input[type="text"], input[type="number"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+}
 
-        input[type="submit"] {
-            padding: 10px;
-            font-size: 16px;
-            /* background-color: #4CAF50; */
-            background-color: transparent;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            border-radius: 5px;
-            border: 2px solid white;
-            }
+input[type="submit"] {
+    padding: 10px;
+    font-size: 16px;
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
+input[type="submit"]:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
 
-        @media screen and (max-width: 800px) {
+.dialog {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #0099cc;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
 
-           form {
-               width: 90%;
-               left: 50%;
-               padding: 15px;
-               margin-top: 60px;
-           }
+.dialog p {
+    color: white;
+    font-size: 18px;
+    margin: 0 0 20px;
+}
 
-                                        }
+.dialog button {
+    padding: 10px 20px;
+    background-color: #006699;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-        input[type="submit"]:hover {
-            background-color: transparent;
-        }
+.dialog button:hover {
+    background-color: #005580;
+}
 
-        .dialog {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #0099cc;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
 
-        .dialog p {
-            color: white;
-            font-size: 18px;
-            margin: 0 0 20px;
-        }
+@media screen and (max-width: 800px) {
+    form {
+        width: 90%;
+    }
 
-        .dialog button {
-            padding: 10px 20px;
-            background-color: #006699;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    #score {
+        font-size: 24px;
+    }
 
-        .dialog button:hover {
-            background-color: #005580;
-        }
+    .coin_score {
+        width: 40px;
+        height: 40px;
+    }
+}
 
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-        }
     </style>
 </head>
 <body>
