@@ -450,7 +450,7 @@ window.addEventListener("load", function() {
                 updateEnergyBar();
                 updateEnergyLevelOnServer(); // Send updated energy level to server
                 localStorage.setItem('energyLevel', energy); // Save energy level to localStorage
-                coinElement.style.pointerEvents = 'auto';
+                coinElement.addEventListener('click')
             } else {
             coinElement.style.pointerEvents = 'none';
             // alert("You have no energy left!");
