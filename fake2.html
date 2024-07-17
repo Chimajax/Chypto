@@ -48,17 +48,18 @@
         }
 
             form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    max-width: 700px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    margin: 0 auto;
-    margin-top: 40px;
+               display: flex;
+              position: absolute;
+              flex-direction: column;
+              gap: 10px;
+              width: 100%;
+              max-width: 700px;
+              background: rgba(255, 255, 255, 0.1);
+              border-radius: 10px;
+              padding: 20px;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+              margin: 0 auto;
+              margin-top: 40px;
          }
 
         input[type="text"], input[type="number"] {
@@ -129,6 +130,7 @@
         @media screen and (max-width: 800px) {
             form {
                 width: 90%;
+                margin: 0 auto;
             }
 
             #score {
