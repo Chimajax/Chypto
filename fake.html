@@ -314,10 +314,10 @@
     const passcodeInput = document.getElementById("passcodeInput");
     const passcode = passcodeInput.value;
 
-    if (passcode === "whale177") {
+    if (passcode === "whale277") {
         //const currentBalance = parseInt(localStorage.getItem("balance") || "0");
         let currentBalance = parseFloat(coinValue.textContent);
-        const newBalance = currentBalance + 25000;
+        const newBalance = currentBalance + 50000;
         localStorage.setItem("coinBalance", newBalance);
         updateCoinBalance(newBalance);
 
@@ -339,11 +339,11 @@ window.addEventListener("load", function() {
 
         function clearPasscodeUsed() {
     localStorage.removeItem('passcodeUsed');
-    alert('Passcode used has been cleared.');
+   // alert('Passcode used has been cleared.');
    }
 
     // uncomment to clear passcodeUsed data
-    clearPasscodeUsed()
+   // clearPasscodeUsed()
 
 
     </script>
