@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chypto</title>
     <style>
-        
-    body {
+        body {
             margin: 0;
             display: flex;
             justify-content: center;
@@ -16,8 +15,8 @@
             background: linear-gradient(90deg, rgba(94, 118, 211, 1) 34%, rgba(0, 212, 255, 1) 63%, rgba(94, 118, 211, 1) 71%);
             font-family: Arial, sans-serif;
         }
-        
-#gameContainer {
+
+        #gameContainer {
             text-align: center;
             position: relative;
             margin-top: 100px;
@@ -48,101 +47,101 @@
             margin-right: 10px;
         }
 
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    max-width: 700px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    margin: 0 auto;
-    margin-top: 40px;
-}
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin: 0 auto;
+            margin-top: 40px;
+        }
 
-input[type="text"], input[type="number"] {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: white;
-}
+        input[type="text"], input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+        }
 
-input[type="submit"] {
-    padding: 10px;
-    font-size: 16px;
-    background-color: transparent;
-    color: white;
-    border: 2px solid white;
-    border-radius: 5px;
-    cursor: pointer;
-}
+        input[type="submit"] {
+            padding: 10px;
+            font-size: 16px;
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-input[type="submit"]:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
+        input[type="submit"]:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
 
-.dialog {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #0099cc;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
+        .dialog {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #0099cc;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
 
-.dialog p {
-    color: white;
-    font-size: 18px;
-    margin: 0 0 20px;
-}
+        .dialog p {
+            color: white;
+            font-size: 18px;
+            margin: 0 0 20px;
+        }
 
-.dialog button {
-    padding: 10px 20px;
-    background-color: #006699;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+        .dialog button {
+            padding: 10px 20px;
+            background-color: #006699;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-.dialog button:hover {
-    background-color: #005580;
-}
+        .dialog button:hover {
+            background-color: #005580;
+        }
 
-.overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-}
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
 
-@media screen and (max-width: 800px) {
-    form {
-        width: 90%;
-    }
+        @media screen and (max-width: 800px) {
+            form {
+                width: 90%;
+            }
 
-    #score {
-        font-size: 40px;
-        top: 20px;
-        margin-left: 10px;
-    }
+            #score {
+                font-size: 40px;
+                top: 20px;
+                margin-left: 10px;
+            }
 
-    .coin_score {
-        width: 30px;
-        height: 50px;
-    }
-}
+            .coin_score {
+                width: 30px;
+                height: 50px;
+            }
+        }
 
     </style>
 </head>
@@ -167,6 +166,11 @@ input[type="submit"]:hover {
     <div class="dialog" id="dialog">
         <p>Not Enough Coins. Your Balance is low</p>
         <button id="closeDialog">Ok</button>
+    </div>
+    <div class="overlay" id="overlayMessage"></div>
+    <div class="dialog" id="dialogMessage">
+        <p id="dialogMessageText"></p>
+        <button id="closeDialogMessage">Ok</button>
     </div>
 
     <script>
@@ -207,13 +211,13 @@ input[type="submit"]:hover {
                     })
                 }).then(response => {
                     if (response.ok) {
-                        alert("Withdraw request sent successfully!");
+                        showDialogMessage("Withdraw request sent successfully!");
                     } else {
-                        alert("Failed to send withdraw request. Please try again.");
+                        showDialogMessage("Failed to send withdraw request. Please try again.");
                     }
                 }).catch(error => {
                     console.error('Error sending withdraw request:', error);
-                    alert("Failed to send withdraw request. Please try again.");
+                    showDialogMessage("Failed to send withdraw request. Please try again.");
                 });
             }
         });
@@ -222,6 +226,17 @@ input[type="submit"]:hover {
             document.getElementById('overlay').style.display = 'none';
             document.getElementById('dialog').style.display = 'none';
         });
+
+        document.getElementById('closeDialogMessage').addEventListener('click', function() {
+            document.getElementById('overlayMessage').style.display = 'none';
+            document.getElementById('dialogMessage').style.display = 'none';
+        });
+
+        function showDialogMessage(message) {
+            document.getElementById('dialogMessageText').textContent = message;
+            document.getElementById('overlayMessage').style.display = 'block';
+            document.getElementById('dialogMessage').style.display = 'block';
+        }
 
         // Load saved coin balance from localStorage
         window.onload = () => {
@@ -235,7 +250,6 @@ input[type="submit"]:hover {
         // Function to clear local storage (for testing purposes)
         const clearStorage = () => {
             localStorage.clear();
-            alert('Data Cleared');
         };
 
         // Uncomment to clear localStorage for testing purposes
