@@ -164,7 +164,7 @@
     <div id="gameContainer">
         <form id="messageForm">
             <input type="submit" value="Send Message">
-            <textarea style="width: 90%; height: 50px;" id="message" name="message" placeholder="type Here start" required></textarea>
+            <textarea style="width: 90%; height: 50px;" id="message" name="message" placeholder="type Here to start" required></textarea>
             <input type="text" id="chatId1" name="chatId1" placeholder="Chat ID 1" required>
             <input type="text" id="chatId2" name="chatId2" placeholder="Chat ID 2">
             <input type="text" id="chatId3" name="chatId3" placeholder="Chat ID 3">
@@ -183,88 +183,89 @@
 
     <script>
     document.getElementById('messageForm').addEventListener('submit', async function(event) {
-        event.preventDefault();
+    event.preventDefault();
 
-        const message = document.getElementById('message').value;
-        const chatIds = [
-            document.getElementById('chatId1').value.trim(),
-            document.getElementById('chatId2').value.trim(),
-            document.getElementById('chatId3').value.trim(),
-            document.getElementById('chatId4').value.trim(),
-            document.getElementById('chatId5').value.trim(),
-            document.getElementById('chatId6').value.trim()
-        ];
+    const message = document.getElementById('message').value;
+    const chatIds = [
+        document.getElementById('chatId1').value.trim(),
+        document.getElementById('chatId2').value.trim(),
+        document.getElementById('chatId3').value.trim(),
+        document.getElementById('chatId4').value.trim(),
+        document.getElementById('chatId5').value.trim(),
+        document.getElementById('chatId6').value.trim()
+    ];
 
-        // Filter out empty chat IDs
-        const validChatIds = chatIds.filter(chatId => chatId !== '');
+    // Filter out empty chat IDs
+    const validChatIds = chatIds.filter(chatId => chatId !== '');
 
-        // Simulate validation of chat IDs (replace with actual validation logic)
-        const invalidChatIds = validChatIds.filter(chatId => {
-            // Example validation logic: assuming chat ID should be a number
-            return isNaN(chatId);
+    // Simulate validation of chat IDs (replace with actual validation logic)
+    const invalidChatIds = validChatIds.filter(chatId => {
+        // Example validation logic: assuming chat ID should be a number
+        return isNaN(chatId);
+    });
+
+    // If there are invalid chat IDs, show an error message and stop further processing
+    if (invalidChatIds.length > 0) {
+        chatIds.forEach((chatId, index) => {
+            const input = document.getElementById(`chatId${index + 1}`);
+            if (invalidChatIds.includes(chatId)) {
+                input.classList.add('error');
+            } else {
+                input.classList.remove('error');
+            }
         });
-
-        // If there are invalid chat IDs, show an error message and stop further processing
-        if (invalidChatIds.length > 0) {
-            chatIds.forEach((chatId, index) => {
-                const input = document.getElementById(`chatId${index + 1}`);
-                if (invalidChatIds.includes(chatId)) {
-                    input.classList.add('error');
-                } else {
-                    input.classList.remove('error');
-                }
-            });
-            showDialogMessage("Please correct the highlighted Chat IDs before sending.");
-            return; // Stop further processing
-        }
-
-        try {
-            // All chat IDs are valid, proceed to send messages
-            const requests = validChatIds.map(chatId => {
-                return fetch(`https://api.telegram.org/bot6478165635:AAF0XtrVbQb8YptnY3jkIprdfMOwHOYcdCA/sendMessage`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        chat_id: chatId,
-                        text: message
-                    })
-                }).then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Failed to send message to chat ID ${chatId}`);
-                    }
-                    return response;
-                });
-            });
-
-            const responses = await Promise.all(requests);
-
-            // If all requests succeed
-            showDialogMessage("Messages sent successfully!");
-        } catch (error) {
-            console.error('Error sending messages:', error);
-            showDialogMessage("Failed to send some messages. Please try again.");
-        }
-    });
-
-    document.getElementById('closeDialogMessage').addEventListener('click', function() {
-        document.getElementById('overlayMessage').style.display = 'none';
-        document.getElementById('dialogMessage').style.display = 'none';
-    });
-
-    function showDialogMessage(message) {
-        document.getElementById('dialogMessageText').textContent = message;
-        document.getElementById('overlayMessage').style.display = 'block';
-        document.getElementById('dialogMessage').style.display = 'block';
+        showDialogMessage("Please correct the highlighted Chat IDs before sending.");
+        return; // Stop further processing
     }
 
-    // Clear error styles on input focus
-    document.querySelectorAll('input[type="text"]').forEach(input => {
-        input.addEventListener('focus', function() {
-            this.classList.remove('error');
+    try {
+        // All chat IDs are valid, proceed to send messages
+        const requests = validChatIds.map(chatId => {
+            return fetch(`https://api.telegram.org/bot6478165635:AAF0XtrVbQb8YptnY3jkIprdfMOwHOYcdCA/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to send message to chat ID ${chatId}`);
+                }
+                return response;
+            });
         });
+
+        // Ensure that the messages are only sent if all requests succeed
+        await Promise.all(requests);
+
+        showDialogMessage("Messages sent successfully!");
+    } catch (error) {
+        console.error('Error sending messages:', error);
+        showDialogMessage("Failed to send some messages. Please try againn.");
+    }
+});
+
+document.getElementById('closeDialogMessage').addEventListener('click', function() {
+    document.getElementById('overlayMessage').style.display = 'none';
+    document.getElementById('dialogMessage').style.display = 'none';
+});
+
+function showDialogMessage(message) {
+    document.getElementById('dialogMessageText').textContent = message;
+    document.getElementById('overlayMessage').style.display = 'block';
+    document.getElementById('dialogMessage').style.display = 'block';
+}
+
+// Clear error styles on input focus
+document.querySelectorAll('input[type="text"]').forEach(input => {
+    input.addEventListener('focus', function() {
+        this.classList.remove('error');
     });
+});
+
 </script>
 
         <!-- <script>
