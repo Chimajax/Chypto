@@ -279,12 +279,13 @@
                 margin-bottom: 15px;
                 left: 50%;
                 align-items: center;
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <h1>Insert Passcode</h1>
+    <h1>Insert Passcode here</h1>
     <div id="gameContainer">
         <div id="score">
             <img src="coin_score_use.png" class="coin_score" style="width: 20%; height: 35%;" />
@@ -320,7 +321,7 @@
     const passcodeInput = document.getElementById("passcodeInput");
     const passcode = passcodeInput.value;
 
-    if (passcode === "whale277") {
+    if (passcode === "Mining") {
         //const currentBalance = parseInt(localStorage.getItem("balance") || "0");
         let currentBalance = parseFloat(coinValue.textContent);
         const newBalance = currentBalance + 50000;
