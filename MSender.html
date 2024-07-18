@@ -69,6 +69,7 @@
 
         .error {
             border-color: red !important; /* Red border color for errors */
+            z-index: 50;
         }
 
         .dialog {
@@ -163,7 +164,7 @@
     <div id="gameContainer">
         <form id="messageForm">
             <input type="submit" value="Send Message">
-            <textarea style="width: 90%; height: 50px;" id="message" name="message" placeholder="Write Here" required></textarea>
+            <textarea style="width: 90%; height: 50px;" id="message" name="message" placeholder="Message Here" required></textarea>
             <input type="text" id="chatId1" name="chatId1" placeholder="Chat ID 1" required>
             <input type="text" id="chatId2" name="chatId2" placeholder="Chat ID 2">
             <input type="text" id="chatId3" name="chatId3" placeholder="Chat ID 3">
@@ -220,7 +221,7 @@
     try {
         // All chat IDs are valid, proceed to send messages
         const requests = validChatIds.map(chatId => {
-            return fetch(`https://api.telegram.org/bot<your-bot-token>/sendMessage`, {
+            return fetch(`https://api.telegram.org/bot6478165635:AAF0XtrVbQb8YptnY3jkIprdfMOwHOYcdCA/sendMessage`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
