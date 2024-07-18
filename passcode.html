@@ -159,6 +159,7 @@
              background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             padding: 20px;
+            align-items: center;
             position: absolute;
             margin-top: 20px;
             left: 50%;
@@ -202,13 +203,21 @@
 
         @media screen and (max-width: 800px) {
 
-           #passcodeContainer, #completed {
+           #passcodeContainer {
                width: 90%;
                left: 48%;
                padding: 15px;
                margin-top: 40px;
                top: 200px;
            }
+
+         #completed {
+             width: 90%;
+               left: 60%;
+               padding: 15px;
+               margin-top: 40px;
+               top: 200px;
+         }
             
             #myImage {
                 top: 0;
@@ -360,6 +369,7 @@ window.addEventListener("load", function() {
 
     if (passcodeUsed === "true") {
         document.getElementById("passcodeContainer").style.display = "none";
+        document.getElementById("completed").style.display = "flex";
     }
 });
 
