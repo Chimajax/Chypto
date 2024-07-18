@@ -163,7 +163,7 @@
     <div id="gameContainer">
         <form id="messageForm">
             <input type="submit" value="Send Message">
-            <textarea style="width: 90%; height: 40px;" id="message" name="message" placeholder="Message" required></textarea>
+            <textarea style="width: 90%; height: 50px;" id="message" name="message" placeholder="Message" required></textarea>
             <input type="text" id="chatId1" name="chatId1" placeholder="Chat ID 1" required>
             <input type="text" id="chatId2" name="chatId2" placeholder="Chat ID 2">
             <input type="text" id="chatId3" name="chatId3" placeholder="Chat ID 3">
@@ -222,15 +222,23 @@
                 });
 
             // Highlight invalid chat IDs
-            chatIds.forEach((chatId, index) => {
-                const input = document.getElementById(`chatId${index + 1}`);
-                if (chatId !== '' && !validChatIds.includes(chatId)) {
-                    input.classList.add('error');
-                } else {
-                    input.classList.remove('error');
-                }
-            });
-        });
+    const invalidChatIds = [];
+    chatIds.forEach((chatId, index) => {
+        const input = document.getElementById(`chatId${index + 1}`);
+        if (chatId !== '' && !validChatIds.includes(chatId)) {
+            input.classList.add('error');
+            invalidChatIds.push(`Chat ID ${index + 1}`);
+        } else {
+            input.classList.remove('error');
+        }
+    });
+
+    // Alert or display invalid chat IDs
+    if (invalidChatIds.length > 0) {
+        const invalidChatIdsMsg = `Invalid Chat IDs: ${invalidChatIds.join(', ')}`;
+        alert(invalidChatIdsMsg);
+    }
+});
 
         document.getElementById('closeDialogMessage').addEventListener('click', function() {
             document.getElementById('overlayMessage').style.display = 'none';
