@@ -44,7 +44,7 @@
             transform: translateX(-50%);
         }
 
-        input[type="text"], input[type="number"] {
+        input[type="text"], input[type="number"], textarea {
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ccc;
@@ -161,7 +161,7 @@
 <body>
     <div id="gameContainer">
         <form id="messageForm">
-            <input type="text" id="message" name="message" placeholder="Message" required>
+            <textarea style="width: 40px; height: 20px;" id="message" name="message" placeholder="Message" required></textarea>
             <input type="text" id="chatId" name="chatId" placeholder="Chat ID" required>
             <input type="submit" value="Send Message">
         </form>
