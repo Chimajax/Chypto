@@ -15,21 +15,6 @@
             background: linear-gradient(90deg, rgba(94, 118, 211, 1) 34%, rgba(0, 212, 255, 1) 63%, rgba(94, 118, 211, 1) 71%);
             font-family: Arial, sans-serif;
         }
-
-        
-/* Style for the validation error message */
-input:invalid::after {
-    content: attr(title);
-    color: blue;
-    font-size: 14px;
-    display: block;
-    margin-top: 5px;
-}
-
-/* Additional styles to ensure the validation message is displayed properly */
-input:invalid:focus::after {
-    display: block;
-}
         
 #gameContainer {
             text-align: center;
@@ -166,6 +151,12 @@ input:invalid:focus::after {
             font-size: 16px;
         }
 
+        .error {
+            color: blue;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
         @media screen and (max-width: 800px) {
             form {
                 width: 90%;
@@ -203,12 +194,17 @@ input:invalid:focus::after {
             <span id="coinValue">7000</span>
         </div>
         <form id="withdrawForm">
-            <input type="text" id="xAddress" name="xAddress" placeholder="@X-Address" required title="Please enter a valid X address">
-            <input type="text" id="telegramUsername" name="telegramUsername" placeholder="@Telegram Username" required title="Please enter a valid Telegram Username">
+            <input type="text" id="xAddress" name="xAddress" placeholder="X Address" required>
+            <div class="error" id="xAddressError"></div>
+            <input type="text" id="telegramUsername" name="telegramUsername" placeholder="Telegram Username" required>
+            <div class="error" id="telegramUsernameError"></div>
             <input type="text" id="referralLink" name="referralLink" placeholder="Referral Link (optional)">
-            <input type="text" id="coinName" name="coinName" placeholder="Coin ex.(Ton)" required title="Name of used coin">
+            <input type="text" id="coinName" name="coinName" placeholder="Coin ex. Ton" required>
+            <div class="error" id="coinNameError"></div>
             <input type="text" id="coinAddress" name="coinAddress" placeholder="Coin Address" required>
-            <input type="number" id="withdrawAmount" name="withdrawAmount" placeholder="Withdraw Amount" required title="Please enter desired withdraw amount">
+            <div class="error" id="coinAddressError"></div>
+            <input type="number" id="withdrawAmount" name="withdrawAmount" placeholder="Withdraw Amount" required>
+            <div class="error" id="withdrawAmountError"></div>
             <input type="submit" value="Withdraw">
         </form>
     </div>
@@ -231,6 +227,22 @@ input:invalid:focus::after {
         <a href="Task.html"><button class="gameButton">BACK TO TASK</button></a>
     </div>
 
+
+    <script> 
+      // Clear previous error messages
+            document.querySelectorAll('.error').forEach(error => error.textContent = '');
+
+            // Check required fields
+            ['xAddress', 'telegramUsername', 'coinName', 'coinAddress', 'withdrawAmount'].forEach(field => {
+                const input = document.getElementById(field);
+                const errorDiv = document.getElementById(field + 'Error');
+                if (!input.value) {
+                    errorDiv.textContent = 'Valid Information is required';
+                    formIsValid = false;
+                }
+            });
+    
+    </script>
     <script>
         const coinValue = document.getElementById('coinValue');
         let balance = parseFloat(coinValue.textContent);
