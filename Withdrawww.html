@@ -66,7 +66,14 @@
               transform: translateX(-50%);
          }
 
-        input[type="text"], input[type="number"] {
+        #walletType {
+           background: rgba(255, 255, 255, 0.1);
+              border-radius: 10px;
+            color: white;
+            width: 100%;
+        }
+
+        input[type="text"], input[type="radio"], input[type="number"] {
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ccc;
@@ -177,6 +184,10 @@
             .gameButton {
                 padding: 10px 15px;
             }
+        }
+
+        input[type="radio"] {
+          width: 100%;
         }
 
     </style>
