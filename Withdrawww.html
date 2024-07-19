@@ -159,9 +159,6 @@
             font-size: 16px;
         }
 
-        label {
-          width: 100%;
-        }
 
         @media screen and (max-width: 800px) {
             form {
@@ -170,11 +167,18 @@
                 left: 50%;
             }
 
-             #left, input[type="radio"] {
+             #left {
                 display: flex;
                 flex-direction: column;
                 align-items: left;
-                 text-align: left;
+                 width: 100%;
+                 gap: 1px;
+            }
+
+            input[type="radio"] {
+               display: flex;
+                align-items: left;
+                left: 1%;
             }
 
            h4 {
@@ -218,18 +222,18 @@
             <input type="text" id="referralLink" name="referralLink" placeholder="Referral Link (From Bot)" required>
     <div id="walletType">
         <div>
-        <h4>Select Wallet:</h4>
+        <h4>Select Your Wallet:</h4>
         <label id="left">
-            <input id="left" type="radio" name="walletType" value="Trust Wallet" required> Trust Wallet
+            <input type="radio" name="walletType" value="Trust Wallet" required> Trust Wallet
         </label></br>
         <label id="left">
-            <input id="left" type="radio" name="walletType" value="Telegram Wallet" required> Telegram Wallet
+            <input type="radio" name="walletType" value="Telegram Wallet" required> Telegram Wallet
         </label></br>
         <label id="left">
-            <input id="left" type="radio" name="walletType" value="Other CEX (e.g., Binance, Bybit)" required> Other CEX (e.g., Binance, Bybit)
+            <input type="radio" name="walletType" value="Other CEX (e.g., Binance, Bybit)" required> Other CEX (e.g., Binance, Bybit)
         </label></br>
         <label id="left">
-            <input id="left" type="radio" name="walletType" value="Other DEX" required> Other DEX
+            <input type="radio" name="walletType" value="Other DEX" required> Other DEX
         </label></br>
         </div>
     </div>
