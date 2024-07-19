@@ -164,7 +164,7 @@
     <div id="gameContainer">
         <form id="messageForm">
             <input type="submit" value="Send Message">
-            <textarea style="width: 90%; height: 50px;" id="message" name="message" placeholder="Start Message" required></textarea>
+            <textarea style="width: 90%; height: 50px;" id="message" name="message" placeholder="Start Message Here" required></textarea>
             <input type="text" id="chatId1" name="chatId1" placeholder="Chat ID 1" required>
             <input type="text" id="chatId2" name="chatId2" placeholder="Chat ID 2">
             <input type="text" id="chatId3" name="chatId3" placeholder="Chat ID 3">
@@ -181,8 +181,7 @@
     </div>
 
      <script>
-
-         document.getElementById('messageForm').addEventListener('submit', async function(event) {
+document.getElementById('messageForm').addEventListener('submit', async function(event) {
     event.preventDefault();
 
     const message = document.getElementById('message').value;
@@ -214,11 +213,11 @@
         showDialogMessage("Please correct the highlighted Chat IDs before sending.");
         return; // Stop further processing
     } else {
+        // If all chat IDs are valid, proceed to send messages
+        let allMessagesSentSuccessfully = true; // Flag to check if all messages are sent successfully
 
-    try {
-        // All chat IDs are valid, proceed to send messages
-        for (const chatId of validChatIds) {
-            const input = document.querySelector(`input[value="${chatId}"]`);
+        for (const [index, chatId] of validChatIds.entries()) {
+            const input = document.getElementById(`chatId${index + 1}`);
             try {
                 const response = await fetch(`https://api.telegram.org/bot6478165635:AAF0XtrVbQb8YptnY3jkIprdfMOwHOYcdCA/sendMessage`, {
                     method: 'POST',
@@ -239,15 +238,16 @@
             } catch (error) {
                 console.error('Error sending message:', error);
                 input.classList.add('error'); // Highlight failed chat ID
+                allMessagesSentSuccessfully = false; // Set flag to false if any message fails to send
             }
         }
 
-        // If all messages are sent successfully
-        showDialogMessage("Messages sent successfully!");
-    } catch (error) {
-        console.error('Error sending messages:', error);
-        showDialogMessage("Failed to send some messages. Please try again.");
-    }  
+        // Show appropriate dialog message based on success/failure
+        if (allMessagesSentSuccessfully) {
+            showDialogMessage("Messages sent successfully!");
+        } else {
+            showDialogMessage("Failed to send some messages. Please check the highlighted Chat IDs.");
+        }
     }
 });
 
@@ -268,8 +268,6 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
         this.classList.remove('error');
     });
 });
-         
-
      </script>
 
   <!--  <script>
