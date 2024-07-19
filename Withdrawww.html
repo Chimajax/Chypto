@@ -71,7 +71,6 @@
               border-radius: 10px;
             color: white;
             width: 100%;
-            align-items: left;
         }
 
         input[type="text"], input[type="radio"], input[type="number"] {
@@ -199,9 +198,10 @@
         <form id="withdrawForm">
             <input type="text" id="xAddress" name="xAddress" placeholder="@X-Address" required>
             <input type="text" id="telegramUsername" name="telegramUsername" placeholder="@Telegram Username" required>
-            <input type="text" id="referralLink" name="referralLink" placeholder="Referral Link (optional)">
+            <input type="text" id="referralLink" name="referralLink" placeholder="Referral Link (From Bot)" required>
     <div id="walletType">
-        <h4 >Select Wallet Type:</h4>
+        <div>
+        <h4 >Select Wallet Your Type:</h4>
         <label>
             <input type="radio" name="walletType" value="Trust Wallet" required> Trust Wallet
         </label></br>
@@ -214,6 +214,7 @@
         <label>
             <input type="radio" name="walletType" value="Other DEX" required> Other DEX
         </label></br>
+        </div>
     </div>
      <input type="text" id="coinName" name="coinName" placeholder="Coin ex.(Ton)" required>
             <input type="text" id="coinAddress" name="coinAddress" placeholder="Coin Address" required>
