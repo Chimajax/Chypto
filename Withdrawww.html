@@ -170,13 +170,14 @@
                 left: 50%;
             }
 
-             input[type="radio"] {
+             #left {
                 display: flex;
                 flex-direction: column;
                 align-items: left;
+                 text-align: left;
             }
 
-           h4, .left {
+           h4 {
              width: 100%;
                 text-align: left;
             }
@@ -217,18 +218,18 @@
             <input type="text" id="referralLink" name="referralLink" placeholder="Referral Link (From Bot)" required>
     <div id="walletType">
         <div>
-        <h4>Select Wallet Type:</h4>
-        <label class="left">
-            <input type="radio" name="walletType" value="Trust Wallet" required> Trust Wallet
+        <h4>Select Wallet:</h4>
+        <label id="left">
+            <input id="left" type="radio" name="walletType" value="Trust Wallet" required> Trust Wallet
         </label></br>
-        <label class="left" >
-            <input type="radio" name="walletType" value="Telegram Wallet" required> Telegram Wallet
+        <label id="left">
+            <input id="left" type="radio" name="walletType" value="Telegram Wallet" required> Telegram Wallet
         </label></br>
-        <label class="left">
-            <input type="radio" name="walletType" value="Other CEX (e.g., Binance, Bybit)" required> Other CEX (e.g., Binance, Bybit)
+        <label id="left">
+            <input id="left" type="radio" name="walletType" value="Other CEX (e.g., Binance, Bybit)" required> Other CEX (e.g., Binance, Bybit)
         </label></br>
-        <label class="left">
-            <input type="radio" name="walletType" value="Other DEX" required> Other DEX
+        <label id="left">
+            <input id="left" type="radio" name="walletType" value="Other DEX" required> Other DEX
         </label></br>
         </div>
     </div>
