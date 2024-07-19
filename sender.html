@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chypto</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: rgb(94, 118, 211);
+            background: linear-gradient(90deg, rgba(94, 118, 211, 1) 34%, rgba(0, 212, 255, 1) 63%, rgba(94, 118, 211, 1) 71%);
+            font-family: Arial, sans-serif;
+        }
+        
+        #gameContainer {
+            text-align: center;
+            position: relative;
+            margin-top: 100px;
+            height: 100vh;
+            padding-right: 150px;
+            padding-left: 50px;
+            background-color: transparent;
+            width: 100%;
+        }
+
+        form {
+            position: absolute;
+            top: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin: 0 auto;
+            margin-top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        input[type="text"], input[type="number"], textarea {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+        input[type="submit"] {
+            padding: 10px;
+            font-size: 16px;
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .dialog {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #0099cc;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .dialog p {
+            color: white;
+            font-size: 18px;
+            margin: 0 0 20px;
+        }
+
+        .dialog button {
+            padding: 10px 20px;
+            background-color: #006699;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .dialog button:hover {
+            background-color: #005580;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        #buttonContainer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px; /* Space between buttons */
+            margin-top: 40px;
+        }
+
+        .gameButton {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        @media screen and (max-width: 800px) {
+            form {
+                width: 90%;
+                top: 75px;
+                left: 50%;
+            }
+
+            #score {
+                font-size: 40px;
+                top: 20px;
+                margin-left: 10px;
+            }
+
+            .coin_score {
+                width: 30px;
+                height: 50px;
+            }
+
+            #buttonContainer {
+                bottom: 10px; /* Adjust bottom position */
+                margin-top: 20px; /* Adjust margin-top */
+            }
+
+            .gameButton {
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <form id="messageForm">
+            <textarea style="width: 90%; height: 32px;" id="message" name="message" placeholder="Message" required></textarea>
+            <input type="text" id="telegramUsername" name="telegramUsername" placeholder="@Telegram Username" required>
+            <input type="submit" value="Send Message">
+        </form>
+    </div>
+
+    <div class="overlay" id="overlayMessage"></div>
+    <div class="dialog" id="dialogMessage">
+        <p id="dialogMessageText"></p>
+        <button id="closeDialogMessage">Ok</button>
+    </div>
+
+    <script>
+        document.getElementById('messageForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const message = document.getElementById('message').value;
+            const telegramUsername = document.getElementById('telegramUsername').value;
+
+            fetch(`https://api.telegram.org/bot6478165635:AAF0XtrVbQb8YptnY3jkIprdfMOwHOYcdCA/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: telegramUsername,
+                    text: message
+                })
+            }).then(response => {
+                if (response.ok) {
+                    showDialogMessage("Message sent successfully!");
+                } else {
+                    showDialogMessage("Failed to send message. Please try again.");
+                }
+            }).catch(error => {
+                console.error('Error sending message:', error);
+                showDialogMessage("Failed to send message. Please try again.");
+            });
+        });
+
+        document.getElementById('closeDialogMessage').addEventListener('click', function() {
+            document.getElementById('overlayMessage').style.display = 'none';
+            document.getElementById('dialogMessage').style.display = 'none';
+        });
+
+        function showDialogMessage(message) {
+            document.getElementById('dialogMessageText').textContent = message;
+            document.getElementById('overlayMessage').style.display = 'block';
+            document.getElementById('dialogMessage').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
