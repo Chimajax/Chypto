@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -158,11 +159,19 @@
             font-size: 16px;
         }
 
+        .left {
+          left: 1%;
+        }
+
         @media screen and (max-width: 800px) {
             form {
                 width: 90%;
                 top: 75px;
                 left: 50%;
+            }
+
+            .left {
+             left: 1%;
             }
 
             #score {
@@ -200,8 +209,8 @@
             <input type="text" id="telegramUsername" name="telegramUsername" placeholder="@Telegram Username" required>
             <input type="text" id="referralLink" name="referralLink" placeholder="Referral Link (From Bot)" required>
     <div id="walletType">
-        <div>
-        <h4 >Select Wallet Your Type:</h4>
+        <div class="left">
+        <h4 >Select Wallet Type:</h4>
         <label>
             <input type="radio" name="walletType" value="Trust Wallet" required> Trust Wallet
         </label></br>
