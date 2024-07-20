@@ -375,7 +375,8 @@
                 await saveUserData(username);
                 sendStartMessage(username);
             } else {
-                alert('Username must start with "@"');
+                telegramUsernameInput.value = "";
+                // alert('Username must start with "@"');
             }
         });
 
