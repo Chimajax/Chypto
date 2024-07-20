@@ -221,7 +221,7 @@
         </div>
         <div class="boost" id="boostCoinBot">
             <div>
-                <div class="boost-name">Litecoin</div>
+                <div class="boost-name">Tron</div>
                 <div class="boost-cost" id="boostCoinBotCost">Cost: 40,000 coins</div>
             </div>
             <div>
@@ -306,9 +306,9 @@
             chargeSpeedCount = parseInt(storage.getItem('chargeSpeedCount')) || 0;
             coinBotCount = parseInt(storage.getItem('coinBotCount')) || 0;
             document.getElementById('boostTapCost').textContent = storage.getItem('boostTapCost') || 'Cost: 85,000 coins';
-            document.getElementById('boostEnergyCost').textContent = storage.getItem('boostEnergyCost') || 'Cost: 12,000 coins';
-            document.getElementById('boostChargeSpeedCost').textContent = storage.getItem('boostChargeSpeedCost') || 'Cost: 3,000';
-            document.getElementById('boostCoinBotCost').textContent = storage.getItem('boostCoinBotCost') || 'Cost: 40,000 coins';
+            document.getElementById('boostEnergyCost').textContent = storage.getItem('boostEnergyCost') || 'Currently Unavailable';
+            document.getElementById('boostChargeSpeedCost').textContent = storage.getItem('boostChargeSpeedCost') || 'Cost: 2,500';
+            document.getElementById('boostCoinBotCost').textContent = storage.getItem('boostCoinBotCost') || 'Cost: 4,000 coins';
         }
     
         loadBoostState();
