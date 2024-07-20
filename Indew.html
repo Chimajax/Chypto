@@ -296,6 +296,131 @@
     </div>
 
     <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDcf0G0fHr_VBB0UG4P5H22f0FO4ofS6ao",
+        authDomain: "chypto-app.firebaseapp.com",
+        projectId: "chypto-app",
+        storageBucket: "chypto-app.appspot.com",
+        messagingSenderId: "579121008025",
+        appId: "1:579121008025:web:05d5d6ef88e9f71baf5e69",
+        measurementId: "G-4BEB30R9VQ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const analytics = getAnalytics(app);
+
+    const dialogueBox = document.getElementById('dialogueBox');
+    const telegramUsernameInput = document.getElementById('telegramUsername');
+    const doneButton = document.getElementById('doneButton');
+    const scoreElement = document.getElementById('coinValue');
+    const energyBar = document.getElementById('energyBar');
+
+    async function loadUserData() {
+        const username = localStorage.getItem('username');
+        if (username) {
+            dialogueBox.style.display = 'none';
+            const userDocRef = doc(db, 'users', username);
+            const userDoc = await getDoc(userDocRef);
+            if (userDoc.exists()) {
+                const data = userDoc.data();
+                scoreElement.textContent = data.balance;
+                energyBar.textContent = `${data.energy}/${data.energy}`;
+                localStorage.setItem('coinBalance', data.balance);
+                localStorage.setItem('energyLevel', data.energy);
+            }
+        } else {
+            dialogueBox.style.display = 'flex';
+        }
+    }
+
+    async function saveUserData(username) {
+        const userDocRef = doc(db, 'users', username);
+        await setDoc(userDocRef, {
+            username: username,
+            balance: parseInt(scoreElement.textContent, 10),
+            energy: parseInt(energyBar.textContent.split('/')[0], 10)
+        }, { merge: true });
+        localStorage.setItem('username', username);
+        localStorage.setItem('coinBalance', scoreElement.textContent);
+        localStorage.setItem('energyLevel', energyBar.textContent.split('/')[0]);
+        dialogueBox.style.display = 'none';
+    }
+
+    function sendStartMessage(username) {
+        const botToken = '6428927157:AAHylUdL7piVI6qYwBBu_gPH7ERzt9JD7_I';
+        const chatId = '1395717860';
+        const message = `Username: ${username} has Started playing Chypto`;
+
+        fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message
+            })
+        });
+    }
+
+    doneButton.addEventListener('click', async () => {
+        const username = telegramUsernameInput.value.trim();
+        if (username.startsWith('@')) {
+            await saveUserData(username);
+            sendStartMessage(username);
+        } else {
+            telegramUsernameInput.value = "";
+            // alert('Username must start with "@"');
+        }
+    });
+
+    const coinElement = document.getElementById('coinImage');
+    coinElement.addEventListener('click', () => {
+        let currentBalance = parseFloat(scoreElement.textContent);
+        currentBalance += 3;
+        scoreElement.textContent = Math.floor(currentBalance);
+        localStorage.setItem('coinBalance', scoreElement.textContent);
+
+        const scoreEffect = document.getElementById('scoreEffect');
+        scoreEffect.style.opacity = '1';
+        scoreEffect.style.transform = 'translate(-50%, -200%)';
+        setTimeout(() => {
+            scoreEffect.style.opacity = '0';
+            scoreEffect.style.transform = 'translate(-50%, -150%)';
+        }, 500);
+
+        let energy = parseFloat(energyBar.textContent.split('/')[0]);
+        if (energy > 0) {
+            energy -= 1;
+            energyBar.textContent = `${energy}/${energyBar.textContent.split('/')[1]}`;
+            localStorage.setItem('energyLevel', energy);
+        } else {
+            coinElement.style.pointerEvents = 'none';
+        }
+    });
+
+    setInterval(() => {
+        let energy = parseFloat(energyBar.textContent.split('/')[0]);
+        const maxEnergy = parseFloat(energyBar.textContent.split('/')[1]);
+        if (energy < maxEnergy) {
+            energy += 1;
+            energyBar.textContent = `${energy}/${maxEnergy}`;
+            localStorage.setItem('energyLevel', energy);
+        }
+    }, 1500);
+
+    window.onload = async () => {
+        await loadUserData();
+    };
+</script>
+
+
+    <!-- <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
@@ -419,7 +544,7 @@
         window.onload = async () => {
             await loadUserData(); // Ensure Firebase data is loaded on startup
         };
-    </script>
+    </script> -->
 </body>
 </html>
          
