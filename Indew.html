@@ -416,6 +416,15 @@
 
     window.onload = async () => {
         await loadUserData();
+
+                // Function to clear local storage (for testing purposes)
+        const clearStorage = () => {
+            localStorage.clear();
+            alert('Data Cleared');
+        };
+
+        // Uncomment to clear localStorage for testing purposes
+        clearStorage();
     };
 </script>
 
