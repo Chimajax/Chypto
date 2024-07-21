@@ -280,7 +280,7 @@
 <body>
     <h1>Tap to Earn</h1>
     <div id="dialogueBox">
-        <h3>Confirm Your @Telegram Username</h3>
+        <h3>Confirm Your Telegram Username</h3>
         <input type="text" id="telegramUsername" placeholder="@Telegram_Username">
         <button id="doneButton">Done</button>
     </div>
@@ -333,6 +333,7 @@
 
     async function loadUserData() {
         const username = localStorage.getItem('username');
+        alert('Loading user data: ' + username);  // Debugging log
         if (username) {
             dialogueBox.style.display = 'none';
             const userDocRef = doc(db, 'users', username);
@@ -346,16 +347,19 @@
             }
         } else {
             dialogueBox.style.display = 'flex';
+            alert('no userdata')
         }
     }
 
     async function saveUserData(username) {
         const userDocRef = doc(db, 'users', username);
+        alert('Creating user document');  // Debugging log
         await setDoc(userDocRef, {
             username: username,
             balance: parseInt(scoreElement.textContent, 10),
             energy: parseInt(energyBar.textContent.split('/')[0], 10)
         }, { merge: true });
+        alert('User document created');  // Debugging log
         localStorage.setItem('username', username);
         localStorage.setItem('coinBalance', scoreElement.textContent);
         localStorage.setItem('energyLevel', energyBar.textContent.split('/')[0]);
@@ -367,6 +371,7 @@
         const chatId = '1395717860';
         const message = `Username: ${username} has Started playing Chypto`;
 
+        alert('Sending start message');  // Debugging log
         fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
             method: 'POST',
             headers: {
@@ -376,17 +381,25 @@
                 chat_id: chatId,
                 text: message
             })
+        }).then(response => {
+            alert('Message sent');  // Debugging log
+        }).catch(error => {
+            alert('Error sending message: ' + error);  // Debugging log
         });
     }
 
     doneButton.addEventListener('click', async () => {
         const username = telegramUsernameInput.value.trim();
-        alert('Username:', username);  // Debugging log
+        alert('Username: ' + username);  // Debugging log
         if (username.startsWith('@')) {
             alert('Saving user data');  // Debugging log
-            await saveUserData(username);
-            alert('Sending start message');  // Debugging log
-            sendStartMessage(username);
+            try {
+                await saveUserData(username);
+                alert('User data saved');  // Debugging log
+                sendStartMessage(username);
+            } catch (error) {
+                alert('Error saving user data: ' + error);  // Debugging log
+            }
         } else {
             alert('Invalid username');  // Debugging log
             telegramUsernameInput.value = "";
@@ -430,7 +443,7 @@
 
     window.onload = async () => {
         await loadUserData();
-        alert('User data loaded');  // Debugging log
+        alert('User data load');  // Debugging log
 
         // Function to clear local storage (for testing purposes)
         const clearStorage = () => {
@@ -441,7 +454,7 @@
         // Uncomment to clear localStorage for testing purposes
         // clearStorage();
     };
-</script> 
+</script>
 
 
     <!-- <script type="module">
