@@ -330,11 +330,11 @@
     const doneButton = document.getElementById('doneButton');
     const scoreElement = document.getElementById('coinValue');
     const energyBar = document.getElementById('energyBar');
+    const coinElement = document.getElementById('coinImage');
 
     async function loadUserData() {
         const username = localStorage.getItem('username');
         if (username) {
-            dialogueBox.style.display = 'none';
             const userDocRef = doc(db, 'users', username);
             const userDoc = await getDoc(userDocRef);
             if (userDoc.exists()) {
@@ -345,10 +345,23 @@
                 localStorage.setItem('coinBalance', data.balance);
                 localStorage.setItem('energyLevel', data.energy);
                 localStorage.setItem('maxEnergy', maxEnergy);
+                coinElement.style.pointerEvents = 'auto';
+            } else {
+                setDefaults();
             }
         } else {
             dialogueBox.style.display = 'flex';
+            setDefaults();
         }
+    }
+
+    function setDefaults() {
+        scoreElement.textContent = '5000';
+        energyBar.textContent = '900/1000';
+        localStorage.setItem('coinBalance', '5000');
+        localStorage.setItem('energyLevel', '900');
+        localStorage.setItem('maxEnergy', '1000');
+        coinElement.style.pointerEvents = 'auto';
     }
 
     async function saveUserData(username) {
@@ -363,6 +376,7 @@
             localStorage.setItem('coinBalance', scoreElement.textContent);
             localStorage.setItem('energyLevel', energyBar.textContent.split('/')[0]);
             dialogueBox.style.display = 'none';
+            coinElement.style.pointerEvents = 'auto';
         } catch (error) {
             alert('Error creating user document: ' + error.message);
         }
@@ -404,11 +418,14 @@
     doneButton.addEventListener('click', async () => {
         const username = telegramUsernameInput.value.trim();
         if (username.startsWith('@')) {
+            coinElement.style.pointerEvents = 'none';
             try {
                 await saveUserData(username);
                 sendStartMessage(username);
             } catch (error) {
                 alert('Error saving user data: ' + error);
+            } finally {
+                coinElement.style.pointerEvents = 'auto';
             }
         } else {
             alert('Invalid username');
@@ -416,7 +433,6 @@
         }
     });
 
-    const coinElement = document.getElementById('coinImage');
     coinElement.addEventListener('click', async () => {
         let currentBalance = parseFloat(scoreElement.textContent);
         currentBalance += 3;
@@ -463,7 +479,11 @@
     }, 1500);
 
     window.onload = async () => {
+        coinElement.style.pointerEvents = 'none';
         await loadUserData();
+        setTimeout(() => {
+            coinElement.style.pointerEvents = 'auto';
+        }, 4000);
 
         // Function to clear local storage (for testing purposes)
         const clearStorage = () => {
