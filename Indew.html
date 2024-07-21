@@ -335,14 +335,14 @@
     async function loadUserData() {
         const username = localStorage.getItem('username');
         if (username) {
-           // const userDocRef = doc(db, 'users', username);
-            const userDoc = await getDoc(userDocRef);
-            if (userDoc.exists()) {
-               try {
-            const userDocRef = doc(db, 'users', username);
-            await getDoc(userDocRef, {
-                balance: parseInt(scoreElement.textContent),
-                energy: parseInt(energyBar.textContent.split('/')[0])
+           const userDocRef = doc(db, 'users', username);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+            scoreElement.textContent = userData.balance.toString();
+            energyBar.textContent = `${userData.energy}/${localStorage.getItem('maxEnergy')}`;
+            localStorage.setItem('coinBalance', userData.balance.toString());
+            localStorage.setItem('energyLevel', userData.energy.toString());
             });
         } catch (error) {
             alert('Error updating user data: ' + error.message);
