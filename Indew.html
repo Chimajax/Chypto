@@ -306,7 +306,174 @@
         <a href="Task.html"><button class="gameButton">TASK</button></a>
     </div>
 
-       <script type="module">
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyB7-RSgR7sJlh1BcrTWKAo5ZpWyvgDM6C8",
+        authDomain: "chypto-html.firebaseapp.com",
+        projectId: "chypto-html",
+        storageBucket: "chypto-html.appspot.com",
+        messagingSenderId: "259890585319",
+        appId: "1:259890585319:web:a896ee91e3d07b1655cc42",
+        measurementId: "G-WRV0TBKC2P"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const analytics = getAnalytics(app);
+
+    const dialogueBox = document.getElementById('dialogueBox');
+    const telegramUsernameInput = document.getElementById('telegramUsername');
+    const doneButton = document.getElementById('doneButton');
+    const scoreElement = document.getElementById('coinValue');
+    const energyBar = document.getElementById('energyBar');
+    const coinElement = document.getElementById('coinImage');
+
+    const INITIAL_BALANCE = parseFloat(scoreElement.textContent.trim()) || 5000; // Default initial balance
+    const [initialEnergy, maxEnergy] = energyBar.textContent.trim().split('/').map(parseFloat);
+
+    async function loadUserData() {
+        const username = localStorage.getItem('username');
+        if (username) {
+            dialogueBox.style.display = 'none';
+            const userDocRef = doc(db, 'users', username);
+            const userDoc = await getDoc(userDocRef);
+            if (userDoc.exists()) {
+                const data = userDoc.data();
+                scoreElement.textContent = data.balance || INITIAL_BALANCE;
+                energyBar.textContent = `${data.energy || initialEnergy}/${maxEnergy}`;
+                localStorage.setItem('coinBalance', data.balance || INITIAL_BALANCE);
+                localStorage.setItem('energyLevel', data.energy || initialEnergy);
+            } else {
+                // New user
+                scoreElement.textContent = INITIAL_BALANCE;
+                energyBar.textContent = `${initialEnergy}/${maxEnergy}`;
+                localStorage.setItem('coinBalance', INITIAL_BALANCE);
+                localStorage.setItem('energyLevel', initialEnergy);
+            }
+        } else {
+            dialogueBox.style.display = 'flex';
+        }
+    }
+
+    async function saveUserData(username) {
+        try {
+            const userDocRef = doc(db, 'users', username);
+            await setDoc(userDocRef, {
+                username: username,
+                balance: parseInt(scoreElement.textContent, 10),
+                energy: parseInt(energyBar.textContent.split('/')[0], 10)
+            }, { merge: true });
+            localStorage.setItem('username', username);
+            localStorage.setItem('coinBalance', scoreElement.textContent);
+            localStorage.setItem('energyLevel', energyBar.textContent.split('/')[0]);
+            dialogueBox.style.display = 'none';
+        } catch (error) {
+            alert('Error creating user document: ' + error.message);
+        }
+    }
+
+    async function updateUserData(username) {
+        try {
+            const userDocRef = doc(db, 'users', username);
+            await updateDoc(userDocRef, {
+                balance: parseInt(scoreElement.textContent, 10),
+                energy: parseInt(energyBar.textContent.split('/')[0], 10)
+            });
+        } catch (error) {
+            alert('Error updating user data: ' + error.message);
+        }
+    }
+
+    function sendStartMessage(username) {
+        const botToken = '6428927157:AAHylUdL7piVI6qYwBBu_gPH7ERzt9JD7_I';
+        const chatId = '1395717860';
+        const message = `Username: ${username} has Started playing Chypto`;
+
+        fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message
+            })
+        }).then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+        }).catch(error => {
+            alert('Error sending message: ' + error);
+        });
+    }
+
+    doneButton.addEventListener('click', async () => {
+        const username = telegramUsernameInput.value.trim();
+        if (username.startsWith('@')) {
+            try {
+                await saveUserData(username);
+                sendStartMessage(username);
+            } catch (error) {
+                alert('Error saving user data: ' + error);
+            }
+        } else {
+            alert('Invalid username');
+            telegramUsernameInput.value = "";
+        }
+    });
+
+    coinElement.addEventListener('click', async () => {
+        let currentBalance = parseFloat(scoreElement.textContent.trim());
+        currentBalance += 3;
+        scoreElement.textContent = Math.floor(currentBalance);
+        localStorage.setItem('coinBalance', scoreElement.textContent);
+
+        const scoreEffect = document.getElementById('scoreEffect');
+        scoreEffect.style.opacity = '1';
+        scoreEffect.style.transform = 'translate(-50%, -200%)';
+        setTimeout(() => {
+            scoreEffect.style.opacity = '0';
+            scoreEffect.style.transform = 'translate(-50%, -150%)';
+        }, 500);
+
+        let energy = parseFloat(energyBar.textContent.split('/')[0]);
+        if (energy > 0) {
+            energy -= 1;
+            energyBar.textContent = `${energy}/${maxEnergy}`;
+            localStorage.setItem('energyLevel', energy);
+        } else {
+            coinElement.style.pointerEvents = 'none';
+        }
+
+        const username = localStorage.getItem('username');
+        if (username) {
+            await updateUserData(username);
+        }
+    });
+
+    setInterval(async () => {
+        let energy = parseFloat(energyBar.textContent.split('/')[0]);
+        if (energy < maxEnergy) {
+            energy += 1;
+            energyBar.textContent = `${energy}/${maxEnergy}`;
+            localStorage.setItem('energyLevel', energy);
+        }
+
+        const username = localStorage.getItem('username');
+        if (username) {
+            await updateUserData(username);
+        }
+    }, 1500);
+
+    window.onload = async () => {
+        await loadUserData();
+    };
+</script>
+
+
+      <!-- <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
@@ -483,7 +650,7 @@
             // Uncomment to clear localStorage for testing purposes
             // clearStorage();
         };
-    </script>
+    </script> -->
     
 </body>
 </html>
