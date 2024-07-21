@@ -5,22 +5,27 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
 
+        // Your web app's Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyDcf0G0fHr_VBB0UG4P5H22f0FO4ofS6ao",
-            authDomain: "chypto-app.firebaseapp.com",
-            projectId: "chypto-app",
-            storageBucket: "chypto-app.appspot.com",
-            messagingSenderId: "579121008025",
-            appId: "1:579121008025:web:05d5d6ef88e9f71baf5e69",
-            measurementId: "G-4BEB30R9VQ"
+            apiKey: "AIzaSyB7-RSgR7sJlh1BcrTWKAo5ZpWyvgDM6C8",
+            authDomain: "chypto-html.firebaseapp.com",
+            projectId: "chypto-html",
+            storageBucket: "chypto-html.appspot.com",
+            messagingSenderId: "259890585319",
+            appId: "1:259890585319:web:a896ee91e3d07b1655cc42",
+            measurementId: "G-WRV0TBKC2P"
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const analytics = getAnalytics(app);
 
         async function testFirestore() {
             try {
+                alert('Creating test document');
                 const testDocRef = doc(db, 'testCollection', 'testDoc');
                 await setDoc(testDocRef, { testField: 'testValue' });
                 alert('Document successfully written!');
@@ -35,6 +40,6 @@
     </script>
 </head>
 <body>
-    <h1>Firebase Test</h1>
+    <h1>Firebase Test 1</h1>
 </body>
 </html>
