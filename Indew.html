@@ -341,9 +341,11 @@
                 if (userDoc.exists()) {
                     const data = userDoc.data();
                     scoreElement.textContent = data.balance;
-                    energyBar.textContent = `${data.energy}/${data.energy}`;
+                    const maxEnergy = localStorage.getItem('maxEnergy') || 10;  // Adjust as per your logic
+                    energyBar.textContent = `${data.energy}/${maxEnergy}`;
                     localStorage.setItem('coinBalance', data.balance);
                     localStorage.setItem('energyLevel', data.energy);
+                    localStorage.setItem('maxEnergy', maxEnergy);
                 }
             } else {
                 dialogueBox.style.display = 'flex';
@@ -359,7 +361,7 @@
                     balance: parseInt(scoreElement.textContent, 10),
                     energy: parseInt(energyBar.textContent.split('/')[0], 10)
                 }, { merge: true });
-                alert('User document created');  // Debugging log
+               alert('User document created');  // Debugging log
                 localStorage.setItem('username', username);
                 localStorage.setItem('coinBalance', scoreElement.textContent);
                 localStorage.setItem('energyLevel', energyBar.textContent.split('/')[0]);
@@ -376,7 +378,7 @@
                     balance: parseInt(scoreElement.textContent),
                     energy: parseInt(energyBar.textContent.split('/')[0])
                 });
-               // alert('User data updated');  // Debugging log
+                // alert('User data updated');  // Debugging log
             } catch (error) {
                 alert('Error updating user data: ' + error.message);  // Debugging log
             }
@@ -411,7 +413,7 @@
                 alert('Saving user data');  // Debugging log
                 try {
                     await saveUserData(username);
-                    alert('User data saved');  // Debugging log
+                  //  alert('User data saved');  // Debugging log
                     sendStartMessage(username);
                 } catch (error) {
                     alert('Error saving user data: ' + error);  // Debugging log
@@ -438,9 +440,10 @@
             }, 500);
 
             let energy = parseFloat(energyBar.textContent.split('/')[0]);
+            const maxEnergy = parseFloat(localStorage.getItem('maxEnergy'));
             if (energy > 0) {
                 energy -= 1;
-                energyBar.textContent = `${energy}/${energyBar.textContent.split('/')[1]}`;
+                energyBar.textContent = `${energy}/${maxEnergy}`;
                 localStorage.setItem('energyLevel', energy);
             } else {
                 coinElement.style.pointerEvents = 'none';
@@ -454,7 +457,7 @@
 
         setInterval(async () => {
             let energy = parseFloat(energyBar.textContent.split('/')[0]);
-            const maxEnergy = parseFloat(energyBar.textContent.split('/')[1]);
+            const maxEnergy = parseFloat(localStorage.getItem('maxEnergy'));
             if (energy < maxEnergy) {
                 energy += 1;
                 energyBar.textContent = `${energy}/${maxEnergy}`;
@@ -469,12 +472,12 @@
 
         window.onload = async () => {
             await loadUserData();
-            alert('User data uploaded');  // Debugging log
+            alert('New User data uploaded');  // Debugging log
 
             // Function to clear local storage (for testing purposes)
             const clearStorage = () => {
                 localStorage.clear();
-                alert('Data Cleared');  // Debugging log
+                console.log('Data Cleared');  // Debugging log
             };
 
             // Uncomment to clear localStorage for testing purposes
