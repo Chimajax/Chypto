@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Test</title>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDcf0G0fHr_VBB0UG4P5H22f0FO4ofS6ao",
+            authDomain: "chypto-app.firebaseapp.com",
+            projectId: "chypto-app",
+            storageBucket: "chypto-app.appspot.com",
+            messagingSenderId: "579121008025",
+            appId: "1:579121008025:web:05d5d6ef88e9f71baf5e69",
+            measurementId: "G-4BEB30R9VQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function testFirestore() {
+            try {
+                const testDocRef = doc(db, 'testCollection', 'testDoc');
+                await setDoc(testDocRef, { testField: 'testValue' });
+                alert('Document successfully written!');
+            } catch (error) {
+                alert('Error writing document: ' + error.message);
+            }
+        }
+
+        window.onload = async () => {
+            await testFirestore();
+        };
+    </script>
+</head>
+<body>
+    <h1>Firebase Test</h1>
+</body>
+</html>
