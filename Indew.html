@@ -306,9 +306,9 @@
         <a href="Task.html"><button class="gameButton">TASK</button></a>
     </div>
 
-     <script type="module">
+   <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
 
         const firebaseConfig = {
@@ -369,6 +369,19 @@
             }
         }
 
+        async function updateUserData(username) {
+            try {
+                const userDocRef = doc(db, 'users', username);
+                await updateDoc(userDocRef, {
+                    balance: parseInt(scoreElement.textContent),
+                    energy: parseInt(energyBar.textContent.split('/')[0])
+                });
+                alert('User data updated');  // Debugging log
+            } catch (error) {
+                alert('Error updating user data: ' + error.message);  // Debugging log
+            }
+        }
+
         function sendStartMessage(username) {
             const botToken = '6428927157:AAHylUdL7piVI6qYwBBu_gPH7ERzt9JD7_I';
             const chatId = '1395717860';
@@ -410,7 +423,7 @@
         });
 
         const coinElement = document.getElementById('coinImage');
-        coinElement.addEventListener('click', () => {
+        coinElement.addEventListener('click', async () => {
             let currentBalance = parseFloat(scoreElement.textContent);
             currentBalance += 3;
             scoreElement.textContent = Math.floor(currentBalance);
@@ -432,9 +445,14 @@
             } else {
                 coinElement.style.pointerEvents = 'none';
             }
+
+            const username = localStorage.getItem('username');
+            if (username) {
+                await updateUserData(username);
+            }
         });
 
-        setInterval(() => {
+        setInterval(async () => {
             let energy = parseFloat(energyBar.textContent.split('/')[0]);
             const maxEnergy = parseFloat(energyBar.textContent.split('/')[1]);
             if (energy < maxEnergy) {
@@ -442,11 +460,16 @@
                 energyBar.textContent = `${energy}/${maxEnergy}`;
                 localStorage.setItem('energyLevel', energy);
             }
+
+            const username = localStorage.getItem('username');
+            if (username) {
+                await updateUserData(username);
+            }
         }, 1500);
 
         window.onload = async () => {
             await loadUserData();
-            alert('User data loaded');  // Debugging log
+            alert('User data uploaded');  // Debugging log
 
             // Function to clear local storage (for testing purposes)
             const clearStorage = () => {
@@ -458,6 +481,7 @@
             // clearStorage();
         };
     </script>
+    
 </body>
 </html>
          
