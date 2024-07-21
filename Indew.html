@@ -280,7 +280,7 @@
 <body>
     <h1>Tap to Earn</h1>
     <div id="dialogueBox">
-        <h3>Confirm Your Telegram Username</h3>
+        <h3>Confirm Your @Telegram Username</h3>
         <input type="text" id="telegramUsername" placeholder="@Telegram_Username">
         <button id="doneButton">Done</button>
     </div>
@@ -306,7 +306,7 @@
         <a href="Task.html"><button class="gameButton">TASK</button></a>
     </div>
 
-    <script type="module">
+     <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
     import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
@@ -347,23 +347,26 @@
             }
         } else {
             dialogueBox.style.display = 'flex';
-            alert('no userdata')
         }
     }
 
     async function saveUserData(username) {
-        const userDocRef = doc(db, 'users', username);
-        alert('Creating user document');  // Debugging log
-        await setDoc(userDocRef, {
-            username: username,
-            balance: parseInt(scoreElement.textContent, 10),
-            energy: parseInt(energyBar.textContent.split('/')[0], 10)
-        }, { merge: true });
-        alert('User document created');  // Debugging log
-        localStorage.setItem('username', username);
-        localStorage.setItem('coinBalance', scoreElement.textContent);
-        localStorage.setItem('energyLevel', energyBar.textContent.split('/')[0]);
-        dialogueBox.style.display = 'none';
+        try {
+            const userDocRef = doc(db, 'users', username);
+            alert('Creating user document');  // Debugging log
+            await setDoc(userDocRef, {
+                username: username,
+                balance: parseInt(scoreElement.textContent, 10),
+                energy: parseInt(energyBar.textContent.split('/')[0], 10)
+            }, { merge: true });
+            alert('User document created');  // Debugging log
+            localStorage.setItem('username', username);
+            localStorage.setItem('coinBalance', scoreElement.textContent);
+            localStorage.setItem('energyLevel', energyBar.textContent.split('/')[0]);
+            dialogueBox.style.display = 'none';
+        } catch (error) {
+            alert('Error creating user document: ' + error.message);  // Debugging log
+        }
     }
 
     function sendStartMessage(username) {
@@ -443,7 +446,7 @@
 
     window.onload = async () => {
         await loadUserData();
-        alert('User data load');  // Debugging log
+        alert('User data loaded');  // Debugging log
 
         // Function to clear local storage (for testing purposes)
         const clearStorage = () => {
@@ -455,6 +458,7 @@
         // clearStorage();
     };
 </script>
+
 
 
     <!-- <script type="module">
