@@ -335,17 +335,19 @@
     async function loadUserData() {
         const username = localStorage.getItem('username');
         if (username) {
-            const userDocRef = doc(db, 'users', username);
+           // const userDocRef = doc(db, 'users', username);
             const userDoc = await getDoc(userDocRef);
             if (userDoc.exists()) {
-                const data = userDoc.data();
-                scoreElement.textContent = data.balance;
-                const maxEnergy = localStorage.getItem('maxEnergy') || 1000;
-                energyBar.textContent = `${data.energy}/${maxEnergy}`;
-                localStorage.setItem('coinBalance', data.balance);
-                localStorage.setItem('energyLevel', data.energy);
-                localStorage.setItem('maxEnergy', maxEnergy);
-                coinElement.style.pointerEvents = 'auto';
+               try {
+            const userDocRef = doc(db, 'users', username);
+            await getDoc(userDocRef, {
+                balance: parseInt(scoreElement.textContent),
+                energy: parseInt(energyBar.textContent.split('/')[0])
+            });
+        } catch (error) {
+            alert('Error updating user data: ' + error.message);
+        }
+    }
                 alert('Doc Loaded')
             } else {
                 // If the user data doesn't exist in Firebase, create a new document
