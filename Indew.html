@@ -381,12 +381,15 @@
 
     doneButton.addEventListener('click', async () => {
         const username = telegramUsernameInput.value.trim();
+        alert('Username:', username);  // Debugging log
         if (username.startsWith('@')) {
+            alert('Saving user data');  // Debugging log
             await saveUserData(username);
+            alert('Sending start message');  // Debugging log
             sendStartMessage(username);
         } else {
+            alert('Invalid username');  // Debugging log
             telegramUsernameInput.value = "";
-            // alert('Username must start with "@"');
         }
     });
 
@@ -427,17 +430,18 @@
 
     window.onload = async () => {
         await loadUserData();
+        alert('User data loaded');  // Debugging log
 
-                // Function to clear local storage (for testing purposes)
+        // Function to clear local storage (for testing purposes)
         const clearStorage = () => {
             localStorage.clear();
-           // alert('Data Cleared');
+            alert('Data Cleared');  // Debugging log
         };
 
         // Uncomment to clear localStorage for testing purposes
         // clearStorage();
     };
-</script>
+</script> 
 
 
     <!-- <script type="module">
