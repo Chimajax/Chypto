@@ -297,7 +297,7 @@
         <div class="scoreEffect" id="scoreEffect">+1</div>
     </div>
     <div id="energyBarContainer">
-        <div id="energyBar">900/1000</div> <!-- Default to 0/1000 until Firebase data is loaded -->
+        <div id="energyBar">1000/1000</div> <!-- Default to 0/1000 until Firebase data is loaded -->
     </div>
     <div id="buttonContainer">
         <a href="Referral.html"><button class="gameButton">REFER</button></a>
@@ -346,6 +346,7 @@
                 localStorage.setItem('energyLevel', data.energy);
                 localStorage.setItem('maxEnergy', maxEnergy);
                 coinElement.style.pointerEvents = 'auto';
+                alert('Doc Loaded')
             } else {
                 setDefaults();
             }
