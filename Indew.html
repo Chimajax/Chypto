@@ -306,7 +306,7 @@
         <a href="Task.html"><button class="gameButton">TASK</button></a>
     </div>
 
-    <script type="module">
+   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
     import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
@@ -335,10 +335,10 @@
     async function loadUserData() {
         const username = localStorage.getItem('username');
         if (username) {
-           const userDocRef = doc(db, 'users', username);
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-            const data = userDoc.data();
+            const userDocRef = doc(db, 'users', username);
+            const userDoc = await getDoc(userDocRef);
+            if (userDoc.exists()) {
+                const data = userDoc.data();
                 alert(`Data loaded from Firebase: balance=${data.balance}, energy=${data.energy}`);
                 scoreElement.textContent = data.balance;
                 const maxEnergy = localStorage.getItem('maxEnergy') || 1000;
@@ -348,15 +348,8 @@
                 localStorage.setItem('maxEnergy', maxEnergy);
                 coinElement.style.pointerEvents = 'auto';
                 alert('Doc Loaded');
-            });
-        } catch (error) {
-            alert('Error updating user data: ' + error.message);
-        }
-    }
-                alert('New Doc Loaded')
             } else {
-                // If the user data doesn't exist in Firebase, create a new document
-            await saveUserData(username);
+                setDefaults();
             }
         } else {
             dialogueBox.style.display = 'flex';
@@ -365,6 +358,7 @@
     }
 
     function setDefaults() {
+        alert('Setting default values');
         scoreElement.textContent = '5000';
         energyBar.textContent = '900/1000';
         localStorage.setItem('coinBalance', '5000');
@@ -386,6 +380,7 @@
             localStorage.setItem('energyLevel', energyBar.textContent.split('/')[0]);
             dialogueBox.style.display = 'none';
             coinElement.style.pointerEvents = 'auto';
+            alert('User data saved to Firebase');
         } catch (error) {
             alert('Error creating user document: ' + error.message);
         }
@@ -398,6 +393,7 @@
                 balance: parseInt(scoreElement.textContent),
                 energy: parseInt(energyBar.textContent.split('/')[0])
             });
+            alert('User data updated in Firebase');
         } catch (error) {
             alert('Error updating user data: ' + error.message);
         }
@@ -504,6 +500,7 @@
         // clearStorage();
     };
 </script>
+
 
    <!-- <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
