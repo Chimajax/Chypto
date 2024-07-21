@@ -306,7 +306,7 @@
         <a href="Task.html"><button class="gameButton">TASK</button></a>
     </div>
 
-   <script type="module">
+       <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
@@ -341,7 +341,7 @@
                 if (userDoc.exists()) {
                     const data = userDoc.data();
                     scoreElement.textContent = data.balance;
-                    const maxEnergy = localStorage.getItem('maxEnergy') || 10;  // Adjust as per your logic
+                    const maxEnergy = localStorage.getItem('maxEnergy') || 1000;  // Set your maxEnergy here
                     energyBar.textContent = `${data.energy}/${maxEnergy}`;
                     localStorage.setItem('coinBalance', data.balance);
                     localStorage.setItem('energyLevel', data.energy);
@@ -361,7 +361,7 @@
                     balance: parseInt(scoreElement.textContent, 10),
                     energy: parseInt(energyBar.textContent.split('/')[0], 10)
                 }, { merge: true });
-               alert('User document created');  // Debugging log
+                alert('User document created');  // Debugging log
                 localStorage.setItem('username', username);
                 localStorage.setItem('coinBalance', scoreElement.textContent);
                 localStorage.setItem('energyLevel', energyBar.textContent.split('/')[0]);
@@ -413,7 +413,7 @@
                 alert('Saving user data');  // Debugging log
                 try {
                     await saveUserData(username);
-                  //  alert('User data saved');  // Debugging log
+                    alert('User data saved');  // Debugging log
                     sendStartMessage(username);
                 } catch (error) {
                     alert('Error saving user data: ' + error);  // Debugging log
@@ -472,12 +472,12 @@
 
         window.onload = async () => {
             await loadUserData();
-            alert('New User data uploaded');  // Debugging log
+            alert('New User data loaded');  // Debugging log
 
             // Function to clear local storage (for testing purposes)
             const clearStorage = () => {
                 localStorage.clear();
-                console.log('Data Cleared');  // Debugging log
+                alert('Data Cleared');  // Debugging log
             };
 
             // Uncomment to clear localStorage for testing purposes
