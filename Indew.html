@@ -348,7 +348,8 @@
                 coinElement.style.pointerEvents = 'auto';
                 alert('Doc Loaded')
             } else {
-                setDefaults();
+                // If the user data doesn't exist in Firebase, create a new document
+            await saveUserData(username);
             }
         } else {
             dialogueBox.style.display = 'flex';
