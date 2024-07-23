@@ -26,13 +26,52 @@
 
           .Start {
             width: 100%;
+              top: 0;
           }
-         }
+          
+         #dialogueBox {
+            width: 90%;
+           flex-direction: column;
+            }
+
+            #dialogueBox button {
+           width: 50%;
+         margin-left: 50px;
+            }
+        }
+  
+        #dialogueBox {
+            display: none;
+            position: fixed;
+            top: 43%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 20px;
+            padding-bottom: 60px;
+            border-radius: 10px;
+            z-index: 1000;
+        }
+        
+        #dialogueBox button {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
 
     </style>
   <body>
 
     <img src="StartPage.jpg" alt="Starting Page" Class="Start">
+      <div id="dialogueBox">
+        <h3>Ready To Play</h3>
+       <a href="indexx.html"> <button id="doneButton">Start</button></a>
+    </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
