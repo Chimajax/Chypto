@@ -71,10 +71,27 @@
     <img src="StartPage.jpg" alt="Starting Page" Class="Start">
       <div id="dialogueBox">
         <h3>Ready To Play</h3>
-       <a href="indexx.html"> <button id="doneButton">Start</button></a>
+       <button id="doneButton">Start</button>
     </div>
 
-<script type="module">
+    <script>
+        function play() {
+            // Navigate to indexx.html
+            window.location.href = 'indexx.html';
+        }
+
+        window.onload = () => {
+            // Retrieve coin balance and energy level from local storage
+            const coinBalance = localStorage.getItem('coinBalance');
+            const energyLevel = localStorage.getItem('energyLevel');
+            console.log(`Coin Balance: ${coinBalance}, Energy Level: ${energyLevel}`);
+        };
+
+        // Add event listener to the button
+        document.getElementById('doneButton').addEventListener('click', play);
+    </script>
+
+<!-- <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
     import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
@@ -267,6 +284,6 @@
         // Uncomment to clear localStorage for testing purposes
         // clearStorage();
     };
-</script>
+</script> -->
   </body>
 </html>
