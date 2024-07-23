@@ -339,7 +339,7 @@
             const userDoc = await getDoc(userDocRef);
             if (userDoc.exists()) {
                 const data = userDoc.data();
-                alert(`Data loaded from Firebase: balance=${data.balance}, energy=${data.energy}`);
+              //  alert(`Data loaded from Firebase: balance=${data.balance}, energy=${data.energy}`);
                 scoreElement.textContent = data.balance;
                 const maxEnergy = localStorage.getItem('maxEnergy') || 1000;
                 energyBar.textContent = `${data.energy}/${maxEnergy}`;
@@ -347,7 +347,7 @@
                 localStorage.setItem('energyLevel', data.energy);
                 localStorage.setItem('maxEnergy', maxEnergy);
                 coinElement.style.pointerEvents = 'auto';
-                alert('Doc Loaded');
+               // alert('Doc Loaded');
             } else {
                 setDefaults();
             }
@@ -358,7 +358,7 @@
     }
 
     function setDefaults() {
-        alert('Setting default values');
+     //   alert('Setting default values');
         scoreElement.textContent = '5000';
         energyBar.textContent = '900/1000';
         localStorage.setItem('coinBalance', '5000');
@@ -380,9 +380,9 @@
             localStorage.setItem('energyLevel', energyBar.textContent.split('/')[0]);
             dialogueBox.style.display = 'none';
             coinElement.style.pointerEvents = 'auto';
-            alert('User data saved to Firebase');
+         //   alert('User data saved to Firebase');
         } catch (error) {
-            alert('Error creating user document: ' + error.message);
+          //  alert('Error creating user document: ' + error.message);
         }
     }
 
@@ -395,7 +395,7 @@
             });
           //  alert('User data updated in Firebase');
         } catch (error) {
-            alert('Error updating user data: ' + error.message);
+          //  alert('Error updating user data: ' + error.message);
         }
     }
 
@@ -414,9 +414,9 @@
                 text: message
             })
         }).then(response => {
-            alert('Message sent');
+          //  alert('Message sent');
         }).catch(error => {
-            alert('Error sending message: ' + error);
+         //   alert('Error sending message: ' + error);
         });
     }
 
@@ -428,12 +428,12 @@
                 await saveUserData(username);
                 sendStartMessage(username);
             } catch (error) {
-                alert('Error saving user data: ' + error);
+              //  alert('Error saving user data: ' + error);
             } finally {
                 coinElement.style.pointerEvents = 'auto';
             }
         } else {
-            alert('Invalid username');
+         //   alert('Invalid username');
             telegramUsernameInput.value = "";
         }
     });
@@ -493,7 +493,7 @@
         // Function to clear local storage (for testing purposes)
         const clearStorage = () => {
             localStorage.clear();
-            alert('Data Cleared');
+          //  alert('Data Cleared');
         };
 
         // Uncomment to clear localStorage for testing purposes
