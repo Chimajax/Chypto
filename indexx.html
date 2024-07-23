@@ -337,7 +337,7 @@
         if (username) {
             const coinBalance = localStorage.getItem('coinBalance');
             const energyLevel = localStorage.getItem('energyLevel');
-            const maxEnergy = localStorage.getItem('maxEnergy') || '1000' ;
+            const maxEnergy = parseFloat(energyBar.textContent.split('/')[1]);
 
             scoreElement.textContent = coinBalance;
             energyBar.textContent = `${energyLevel}/${maxEnergy}`;
@@ -441,7 +441,7 @@
         }, 500);
 
         let energy = parseFloat(energyBar.textContent.split('/')[0]);
-        const maxEnergy = parseFloat(localStorage.getItem('maxEnergy'));
+        const maxEnergy = parseFloat(energyBar.textContent.split('/')[1]);
         if (energy > 0) {
             energy -= 1;
             energyBar.textContent = `${energy}/${maxEnergy}`;
@@ -458,7 +458,7 @@
 
     setInterval(async () => {
         let energy = parseFloat(energyBar.textContent.split('/')[0]);
-        const maxEnergy = parseFloat(localStorage.getItem('maxEnergy'));
+        const maxEnergy = parseFloat(energyBar.textContent.split('/')[1]);
         if (energy < maxEnergy) {
             energy += 1;
             energyBar.textContent = `${energy}/${maxEnergy}`;
