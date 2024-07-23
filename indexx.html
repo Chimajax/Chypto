@@ -337,7 +337,7 @@
         if (username) {
             const coinBalance = localStorage.getItem('coinBalance');
             const energyLevel = localStorage.getItem('energyLevel');
-            const maxEnergy = parseFloat(energyBar.textContent.split('/')[1]);
+            const maxEnergy = localStorage.getItem('maxEnergy') || '1000';
 
             scoreElement.textContent = coinBalance;
             energyBar.textContent = `${energyLevel}/${maxEnergy}`;
