@@ -345,6 +345,17 @@
                 }
             }
         }
+
+       function resetTasks() {
+            const tasks = document.querySelectorAll('.task');
+            tasks.forEach(task => {
+                task.classList.remove('hidden');
+            });
+            // alert('Tasks have been reset.');
+        }
+
+        // Uncomment the line below to reset tasks when you're ready
+        // resetTasks();
     </script>
 
    <!-- <script>
