@@ -298,17 +298,14 @@
             telegram: "https://t.me/chyptochannel"
         };
 
-        async function updateUserData(username, reward) {
+        async function updateUserData(username) {
             const userDocRef = doc(db, 'users', username);
-            const userDoc = await getDoc(userDocRef);
-            if (userDoc.exists()) {
-                const data = userDoc.data();
-                const newBalance = data.balance + reward;
-                await updateDoc(userDocRef, { balance: newBalance });
-                return newBalance;
+            const currentBalance = parseInt(localStorage.getItem('coinBalance'), 10);
+            if (currentBalance) {
+                await updateDoc(userDocRef, { balance: currentBalance });
+                return currentBalance;
             } else {
-                // Handle case where user doc does not exist
-             //   alert('User document does not exist in Firebase.');
+                // alert('Failed to update user data in Firebase.');
                 return null;
             }
         }
@@ -327,7 +324,7 @@
             localStorage.setItem('coinBalance', currentBalance);
 
             // Update balance on the page (optional if you have an element to display it)
-           // document.getElementById('coinValue').textContent = currentBalance;
+            // document.getElementById('coinValue').textContent = currentBalance;
 
             // Hide the clicked task
             document.getElementById(`${task}Task`).classList.add('hidden');
@@ -336,7 +333,7 @@
             const username = localStorage.getItem('username');
             if (username) {
                 // Update the balance in Firebase
-                const newBalance = await updateUserData(username, reward);
+                const newBalance = await updateUserData(username);
                 if (newBalance !== null) {
                     // Redirect to the link after 3 seconds
                     setTimeout(() => {
@@ -346,12 +343,12 @@
             }
         }
 
-       function resetTasks() {
+        function resetTasks() {
             const tasks = document.querySelectorAll('.task');
             tasks.forEach(task => {
                 task.classList.remove('hidden');
             });
-            // alert('Tasks have been reset.');
+           // alert('Tasks have been reset.');
         }
 
         // Uncomment the line below to reset tasks when you're ready
