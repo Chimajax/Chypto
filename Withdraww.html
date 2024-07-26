@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,7 +67,14 @@
               transform: translateX(-50%);
          }
 
-        input[type="text"], input[type="number"] {
+        #walletType {
+           background: rgba(255, 255, 255, 0.1);
+              border-radius: 10px;
+            color: white;
+            width: 100%;
+        }
+
+        input[type="text"], input[type="radio"], input[type="number"] {
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ccc;
@@ -151,11 +159,32 @@
             font-size: 16px;
         }
 
+
         @media screen and (max-width: 800px) {
             form {
                 width: 90%;
                 top: 75px;
                 left: 50%;
+            }
+
+             #left {
+                display: flex;
+                flex-direction: row;
+                align-items: left;
+                 width: 100%;
+                 left: 1%;
+                 gap: 1px;
+            }
+
+            input[type="radio"] {
+               display: flex;
+                align-items: left;
+                left: 1%;
+            }
+
+           h4 {
+             width: 100%;
+                text-align: left;
             }
 
             #score {
@@ -179,6 +208,7 @@
             }
         }
 
+
     </style>
 </head>
 <body>
@@ -190,8 +220,25 @@
         <form id="withdrawForm">
             <input type="text" id="xAddress" name="xAddress" placeholder="@X-Address" required>
             <input type="text" id="telegramUsername" name="telegramUsername" placeholder="@Telegram Username" required>
-            <input type="text" id="referralLink" name="referralLink" placeholder="Referral Link (optional)">
-            <input type="text" id="coinName" name="coinName" placeholder="Coin ex.(Ton)" required>
+            <input type="text" id="referralLink" name="referralLink" placeholder="Referral Link (From Bot)" required>
+    <div id="walletType">
+        <div>
+        <h4>Select Wallet:</h4>
+        <label id="left">
+            <input type="radio" name="walletType" value="Trust Wallet" required> Trust Wallet
+        </label></br>
+        <label id="left">
+            <input type="radio" name="walletType" value="Telegram Wallet" required> Telegram Wallet
+        </label></br>
+        <label id="left">
+            <input type="radio" name="walletType" value="Other CEX (e.g., Binance, Bybit)" required> Other CEX (e.g., Binance, Bybit)
+        </label></br>
+        <label id="left">
+            <input type="radio" name="walletType" value="Other DEX" required> Other DEX
+        </label></br>
+        </div>
+    </div>
+     <input type="text" id="coinName" name="coinName" placeholder="Coin ex.(Ton)" required>
             <input type="text" id="coinAddress" name="coinAddress" placeholder="Coin Address" required>
             <input type="number" id="withdrawAmount" name="withdrawAmount" placeholder="Withdraw Amount minimum 5000" min="5000" required>
             <input type="submit" value="Withdraw">
@@ -216,54 +263,188 @@
         <a href="Task.html"><button class="gameButton">BACK TO TASK</button></a>
     </div>
 
-    <script>
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+    import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyB7-RSgR7sJlh1BcrTWKAo5ZpWyvgDM6C8",
+        authDomain: "chypto-html.firebaseapp.com",
+        projectId: "chypto-html",
+        storageBucket: "chypto-html.appspot.com",
+        messagingSenderId: "259890585319",
+        appId: "1:259890585319:web:a896ee91e3d07b1655cc42",
+        measurementId: "G-WRV0TBKC2P"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const coinValue = document.getElementById('coinValue');
+    let balance = parseFloat(coinValue.textContent);
+
+    document.getElementById('withdrawForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const withdrawAmount = parseFloat(document.getElementById('withdrawAmount').value);
+        const walletType = document.querySelector('input[name="walletType"]:checked');
+
+        if (!walletType) {
+            showDialogMessage("Please select a wallet type before submitting.");
+            return; // Stop form submission if no wallet type is selected
+        }
+
+        const selectedWalletType = walletType.value;
+
+        if (withdrawAmount > balance) {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('dialog').style.display = 'block';
+        } else {
+            balance -= withdrawAmount;
+            coinValue.textContent = Math.floor(balance);
+            localStorage.setItem('coinBalance', balance);
+
+            const formData = new FormData(event.target);
+            const data = {
+                walletType: selectedWalletType,
+                xAddress: formData.get('xAddress'),
+                telegramUsername: formData.get('telegramUsername'),
+                referralLink: formData.get('referralLink'),
+                coinName: formData.get('coinName'),
+                coinAddress: formData.get('coinAddress'),
+                withdrawAmount: withdrawAmount
+            };
+
+            fetch('https://api.telegram.org/bot6428927157:AAHylUdL7piVI6qYwBBu_gPH7ERzt9JD7_I/sendMessage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: '1395717860',
+                    text: `New Withdraw Request:\n\nX Address: ${data.xAddress}\nTelegram Username: ${data.telegramUsername}\nReferral Link: ${data.referralLink}\nUser Picked: ${data.walletType}\nCoin Name: ${data.coinName}\nCoin Address: ${data.coinAddress}\nWithdraw Amount: ${data.withdrawAmount}`
+                })
+            }).then(response => {
+                if (response.ok) {
+                    showDialogMessage("Withdraw request sent successfully!");
+                    updateFirebaseBalance();
+                } else {
+                    showDialogMessage("Failed to send withdraw request. Please try again.");
+                }
+            }).catch(error => {
+                console.error('Error sending withdraw request:', error);
+                showDialogMessage("Failed to send withdraw request. Please try again.");
+            });
+        }
+    });
+
+    document.getElementById('closeDialog').addEventListener('click', function() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('dialog').style.display = 'none';
+    });
+
+    document.getElementById('closeDialogMessage').addEventListener('click', function() {
+        document.getElementById('overlayMessage').style.display = 'none';
+        document.getElementById('dialogMessage').style.display = 'none';
+    });
+
+    function showDialogMessage(message) {
+        document.getElementById('dialogMessageText').textContent = message;
+        document.getElementById('overlayMessage').style.display = 'block';
+        document.getElementById('dialogMessage').style.display = 'block';
+    }
+
+    // Load saved coin balance from localStorage
+    window.onload = () => {
+        const savedBalance = localStorage.getItem('coinBalance');
+        if (savedBalance !== null) {
+            balance = parseFloat(savedBalance);
+            coinValue.textContent = Math.floor(balance);
+        }
+    };
+
+    // Function to update Firebase balance
+    async function updateFirebaseBalance() {
+        const username = localStorage.getItem('username');
+        if (username) {
+            try {
+                const userDocRef = doc(db, 'users', username);
+                await updateDoc(userDocRef, {
+                    balance: parseInt(localStorage.getItem('coinBalance'), 10)
+                });
+            } catch (error) {
+                console.error('Error updating Firebase balance:', error);
+            }
+        }
+    }
+
+    // Function to clear local storage (for testing purposes)
+    const clearStorage = () => {
+        localStorage.clear();
+    };
+
+    // Uncomment to clear localStorage for testing purposes
+    // clearStorage();
+</script>
+
+
+   <!-- <script>
         const coinValue = document.getElementById('coinValue');
         let balance = parseFloat(coinValue.textContent);
 
-        document.getElementById('withdrawForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+    document.getElementById('withdrawForm').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-            const withdrawAmount = parseFloat(document.getElementById('withdrawAmount').value);
+    const withdrawAmount = parseFloat(document.getElementById('withdrawAmount').value);
+    const walletType = document.querySelector('input[name="walletType"]:checked');
 
-            if (withdrawAmount > balance) {
-                document.getElementById('overlay').style.display = 'block';
-                document.getElementById('dialog').style.display = 'block';
+    if (!walletType) {
+        showDialogMessage("Please select a wallet type before submitting.");
+        return; // Stop form submission if no wallet type is selected
+    }
+
+    const selectedWalletType = walletType.value;
+
+    if (withdrawAmount > balance) {
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('dialog').style.display = 'block';
+    } else {
+        balance -= withdrawAmount;
+        coinValue.textContent = Math.floor(balance);
+        localStorage.setItem('coinBalance', balance);
+
+        const formData = new FormData(event.target);
+        const data = {
+            walletType: selectedWalletType,
+            xAddress: formData.get('xAddress'),
+            telegramUsername: formData.get('telegramUsername'),
+            referralLink: formData.get('referralLink'),
+            coinName: formData.get('coinName'),
+            coinAddress: formData.get('coinAddress'),
+            withdrawAmount: withdrawAmount
+        };
+
+        fetch('https://api.telegram.org/bot6428927157:AAHylUdL7piVI6qYwBBu_gPH7ERzt9JD7_I/sendMessage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                chat_id: '1395717860',
+                text: `New Withdraw Request:\n\nX Address: ${data.xAddress}\nTelegram Username: ${data.telegramUsername}\nReferral Link: ${data.referralLink}\nUser Picked: ${data.walletType}\nCoin Name: ${data.coinName}\nCoin Address: ${data.coinAddress}\nWithdraw Amount: ${data.withdrawAmount}`
+            })
+        }).then(response => {
+            if (response.ok) {
+                showDialogMessage("Withdraw request sent successfully!");
             } else {
-                balance -= withdrawAmount;
-                coinValue.textContent = Math.floor(balance);
-                localStorage.setItem('coinBalance', balance);
-
-                const formData = new FormData(event.target);
-                const data = {
-                    xAddress: formData.get('xAddress'),
-                    telegramUsername: formData.get('telegramUsername'),
-                    referralLink: formData.get('referralLink'),
-                    coinName: formData.get('coinName'),
-                    coinAddress: formData.get('coinAddress'),
-                    withdrawAmount: withdrawAmount
-                };
-
-                fetch('https://api.telegram.org/bot6428927157:AAHylUdL7piVI6qYwBBu_gPH7ERzt9JD7_I/sendMessage', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        chat_id: '1395717860',
-                        text: `New Withdraw Request:\n\nX Address: ${data.xAddress}\nTelegram Username: ${data.telegramUsername}\nReferral Link: ${data.referralLink}\nCoin Name: ${data.coinName}\nCoin Address: ${data.coinAddress}\nWithdraw Amount: ${data.withdrawAmount}`
-                    })
-                }).then(response => {
-                    if (response.ok) {
-                        showDialogMessage("Withdraw request sent successfully!");
-                    } else {
-                        showDialogMessage("Failed to send withdraw request. Please try again.");
-                    }
-                }).catch(error => {
-                    console.error('Error sending withdraw request:', error);
-                    showDialogMessage("Failed to send withdraw request. Please try again.");
-                });
+                showDialogMessage("Failed to send withdraw request. Please try again.");
             }
+        }).catch(error => {
+            console.error('Error sending withdraw request:', error);
+            showDialogMessage("Failed to send withdraw request. Please try again.");
         });
+    }
+});
 
         document.getElementById('closeDialog').addEventListener('click', function() {
             document.getElementById('overlay').style.display = 'none';
@@ -298,6 +479,6 @@
         // Uncomment to clear localStorage for testing purposes
         // clearStorage();
         
-    </script>
+    </script> -->
 </body>
 </html>
