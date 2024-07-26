@@ -172,6 +172,10 @@
             margin-top: 5px; /* Add some space between the task name and reward */
         }
 
+        .hidden {
+         display: none;
+        }
+
         @media screen and (max-width: 800px) {
            .task-container,.withdraw-container {
                 width: calc(100% - 20px); /* 10px less on each side */
@@ -203,19 +207,19 @@
         <h1>Follow Our Socials</h1>
         <div class="task" id="youtubeTask">
             <div class="task-name">Subscribe to YouTube Channel</div>
-            <div class="task-reward">Earn 25000 coins</div>
+            <div class="task-reward">Earn 3000 coins</div>
             <button onclick="startTask('youtube')" id="youtubeButton">Go</button>
         </div>
         
         <div class="task" id="xTask">
             <div class="task-name">Follow Us on X</div>
-            <div class="task-reward">Earn 20000 coins</div>
+            <div class="task-reward">Earn 2500 coins</div>
             <button onclick="startTask('x')" id="xButton">Go</button>
         </div>
         
         <div class="task" id="telegramTask">
             <div class="task-name">Follow Our Telegram Channel</div>
-            <div class="task-reward">Earn 15000 coins</div>
+            <div class="task-reward">Earn 2000 coins</div>
             <button onclick="startTask('telegram')" id="telegramButton">Go</button>
         </div>
     </div>
@@ -224,11 +228,11 @@
         <h1>Check Socials</h1>
         <div class="task" id="youtubeCheckTask">
             <div class="task-name">Youtube Rewards</div>
-            <button onclick="openSocial('youtube')">Go</button>
+            <a href="https://youtube.com/shorts/WnXl-Cj__T8?si=eQIsDeycxb6SA2kD"><button>Go</button></a>
         </div>
         <div class="task" id="xCheckTask">
             <div class="task-name">Like and Repost ~ 5,000</div>
-            <button onclick="openSocial('x')">Go</button>
+            <a href="https://x.com/Chypto_Official/status/1813862058569691321?t=6AOC_EU6u7koJSDQWI8Yuw&s=19"><button>Go</button></a>
         </div>
       <!--  <div class="task" id="telegramCheckTask">
             <div class="task-name">Telegram Channel Rewards</div>
@@ -265,7 +269,85 @@
         <button class="gameButton disabled">TASK</button>
     </div>
 
-    <script>
+   <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB7-RSgR7sJlh1BcrTWKAo5ZpWyvgDM6C8",
+            authDomain: "chypto-html.firebaseapp.com",
+            projectId: "chypto-html",
+            storageBucket: "chypto-html.appspot.com",
+            messagingSenderId: "259890585319",
+            appId: "1:259890585319:web:a896ee91e3d07b1655cc42",
+            measurementId: "G-WRV0TBKC2P"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const taskRewards = {
+            youtube: 3000,
+            x: 2500,
+            telegram: 2000
+        };
+
+        const taskLinks = {
+            youtube: "https://www.youtube.com/@Chypto",
+            x: "https://X.com/@Chypto_Official",
+            telegram: "https://t.me/chyptochannel"
+        };
+
+        async function updateUserData(username, reward) {
+            const userDocRef = doc(db, 'users', username);
+            const userDoc = await getDoc(userDocRef);
+            if (userDoc.exists()) {
+                const data = userDoc.data();
+                const newBalance = data.balance + reward;
+                await updateDoc(userDocRef, { balance: newBalance });
+                return newBalance;
+            } else {
+                // Handle case where user doc does not exist
+             //   alert('User document does not exist in Firebase.');
+                return null;
+            }
+        }
+
+        async function startTask(task) {
+            const reward = taskRewards[task];
+            const link = taskLinks[task];
+
+            // Load current balance from local storage
+            let currentBalance = parseInt(localStorage.getItem('coinBalance'), 10) || 0;
+
+            // Add reward to balance
+            currentBalance += reward;
+
+            // Save updated balance to local storage
+            localStorage.setItem('coinBalance', currentBalance);
+
+            // Update balance on the page (optional if you have an element to display it)
+           // document.getElementById('coinValue').textContent = currentBalance;
+
+            // Hide the clicked task
+            document.getElementById(`${task}Task`).classList.add('hidden');
+
+            // Get the username from local storage
+            const username = localStorage.getItem('username');
+            if (username) {
+                // Update the balance in Firebase
+                const newBalance = await updateUserData(username, reward);
+                if (newBalance !== null) {
+                    // Redirect to the link after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = link;
+                    }, 3000);
+                }
+            }
+        }
+    </script>
+
+   <!-- <script>
         // Function to start a task and handle completion
         function startTask(platform) {
             switch (platform) {
@@ -383,6 +465,6 @@
             console.log('Local storage cleared.');
         }
         */
-    </script>
+    </script> -->
 </body>
 </html>
