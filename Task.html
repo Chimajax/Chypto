@@ -269,7 +269,137 @@
         <button class="gameButton disabled">TASK</button>
     </div>
 
-   <script type="module">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB7-RSgR7sJlh1BcrTWKAo5ZpWyvgDM6C8",
+            authDomain: "chypto-html.firebaseapp.com",
+            projectId: "chypto-html",
+            storageBucket: "chypto-html.appspot.com",
+            messagingSenderId: "259890585319",
+            appId: "1:259890585319:web:a896ee91e3d07b1655cc42",
+            measurementId: "G-WRV0TBKC2P"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function updateUserData(username) {
+            const userDocRef = doc(db, 'users', username);
+            const currentBalance = parseInt(localStorage.getItem('coinBalance'), 10);
+            if (currentBalance) {
+                await updateDoc(userDocRef, { balance: currentBalance });
+                return currentBalance;
+            } else {
+                // alert('Failed to update user data in Firebase.');
+                return null;
+            }
+        }
+
+         function startTask('youtube') {
+             // Load current balance from local storage
+            let currentBalance = parseInt(localStorage.getItem('coinBalance'), 10);
+
+            // Add reward to balance
+            newBalance = currentBalance + 3000;
+
+             localStorage.setItem('coinBalance', newBalance);
+
+            // Update balance on the page (optional if you have an element to display it)
+            // document.getElementById('coinValue').textContent = currentBalance;
+
+            // Hide the clicked task
+            document.getElementById(`youtubeTask`).classList.add('hidden');
+
+            // Get the username from local storage
+            const username = localStorage.getItem('username');
+            if (username) {
+                // Update the balance in Firebase
+                const newBalancee = await updateUserData(username);
+                if (newBalancee !== null) {
+                    // Redirect to the link after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = 'https://www.youtube.com/@Chypto';
+                    }, 2000);
+             
+             
+         } }
+         }
+        
+            function startTask('x') {
+
+                // Load current balance from local storage
+            let currentBalance = parseInt(localStorage.getItem('coinBalance'), 10);
+
+            // Add reward to balance
+            newBalance = currentBalance + 2500;
+
+             localStorage.setItem('coinBalance', newBalance);
+
+            // Update balance on the page (optional if you have an element to display it)
+            // document.getElementById('coinValue').textContent = currentBalance;
+
+            // Hide the clicked task
+            document.getElementById(`xTask`).classList.add('hidden');
+
+            // Get the username from local storage
+            const username = localStorage.getItem('username');
+            if (username) {
+                // Update the balance in Firebase
+                const newBalancee = await updateUserData(username);
+                if (newBalancee !== null) {
+                    // Redirect to the link after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = 'https://X.com/@Chypto_Official';
+                    }, 2000);
+                    ,}}
+                 }
+
+           function startTask('telegram') {
+                // Load current balance from local storage
+            let currentBalance = parseInt(localStorage.getItem('coinBalance'), 10);
+
+            // Add reward to balance
+            newBalance = currentBalance + 2000;
+
+             localStorage.setItem('coinBalance', newBalance);
+
+            // Update balance on the page (optional if you have an element to display it)
+            // document.getElementById('coinValue').textContent = currentBalance;
+
+            // Hide the clicked task
+            document.getElementById(`telegramTask`).classList.add('hidden');
+
+            // Get the username from local storage
+            const username = localStorage.getItem('username');
+            if (username) {
+                // Update the balance in Firebase
+                const newBalancee = await updateUserData(username);
+                if (newBalancee !== null) {
+                    // Redirect to the link after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = 'https://t.me/chyptochannel';
+                    }, 2000);
+                    ,}}
+                 }
+
+        function resetTasks() {
+            const tasks = document.querySelectorAll('.task');
+            tasks.forEach(task => {
+                task.classList.remove('hidden');
+            });
+           // alert('Tasks have been reset.');
+        }
+
+        // Uncomment the line below to reset tasks when you're ready
+        // resetTasks();
+           
+
+    </script>
+
+  <!-- <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
         import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
@@ -354,6 +484,9 @@
         // Uncomment the line below to reset tasks when you're ready
         // resetTasks();
     </script>
+
+
+    
 
    <!-- <script>
         // Function to start a task and handle completion
