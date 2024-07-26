@@ -270,7 +270,121 @@
         <button class="gameButton disabled">TASK</button>
     </div>
 
-     <script type="module">
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+    import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyB7-RSgR7sJlh1BcrTWKAo5ZpWyvgDM6C8",
+        authDomain: "chypto-html.firebaseapp.com",
+        projectId: "chypto-html",
+        storageBucket: "chypto-html.appspot.com",
+        messagingSenderId: "259890585319",
+        appId: "1:259890585319:web:a896ee91e3d07b1655cc42",
+        measurementId: "G-WRV0TBKC2P"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function updateUserData(username, newBalance) {
+        const userDocRef = doc(db, 'users', username);
+        if (newBalance) {
+            await updateDoc(userDocRef, { balance: newBalance });
+            return newBalance;
+        } else {
+            alert('Failed to update user data in Firebase.');
+            return null;
+        }
+    }
+
+    async function startTask(taskType, reward, redirectUrl) {
+        // Load current balance from local storage
+        let currentBalance = parseInt(localStorage.getItem('coinBalance'), 10);
+        if (isNaN(currentBalance)) {
+            currentBalance = 0;
+        }
+
+        // Add reward to balance
+        const newBalance = currentBalance + reward;
+        localStorage.setItem('coinBalance', newBalance);
+
+        // Hide the clicked task
+        document.getElementById(`${taskType}Task`).classList.add('hidden');
+
+        // Save the task state to local storage
+        let completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || [];
+        if (!completedTasks.includes(taskType)) {
+            completedTasks.push(taskType);
+            localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+        }
+
+        // Get the username from local storage
+        const username = localStorage.getItem('username');
+        if (username) {
+            // Update the balance in Firebase
+            const updatedBalance = await updateUserData(username, newBalance);
+            if (updatedBalance !== null) {
+                // Redirect to the link after 2 seconds
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 2000);
+            }
+        }
+    }
+
+    // Event listeners for task buttons
+    document.getElementById('youtubeTaskButton').addEventListener('click', () => startTask('youtube', 3000, 'https://www.youtube.com/@Chypto'));
+    document.getElementById('xTaskButton').addEventListener('click', () => startTask('x', 2500, 'https://X.com/@Chypto_Official'));
+    document.getElementById('telegramTaskButton').addEventListener('click', () => startTask('telegram', 2000, 'https://t.me/chyptochannel'));
+
+    function displayTasks() {
+        // Define all tasks including new ones
+        const allTasks = ['youtube', 'x', 'telegram', 'newTask1', 'newTask2']; // Add new tasks here
+
+        // Load completed tasks from local storage
+        const completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || [];
+
+        // Show or hide tasks based on completion status
+        allTasks.forEach(taskType => {
+            const taskElement = document.getElementById(`${taskType}Task`);
+            if (taskElement) {
+                if (completedTasks.includes(taskType)) {
+                    taskElement.classList.add('hidden');
+                } else {
+                    taskElement.classList.remove('hidden');
+                }
+            }
+        });
+    }
+
+    // Hide completed tasks on page load and display tasks
+    window.onload = () => {
+        displayTasks();
+    }
+
+    // Function to make a task visible again
+    function makeTasksVisible() {
+        // Retrieve the completed tasks from local storage
+        let completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || [];
+        
+        completedTasks.forEach(task => {
+            const taskElement = document.getElementById(`${task}Task`);
+            if (taskElement) {
+                taskElement.classList.remove('hidden');
+            }
+        });
+
+        // Optionally clear completed tasks from local storage
+        // localStorage.removeItem('completedTasks');
+    }
+
+    // Uncomment the line below to make tasks visible again
+    // makeTasksVisible();
+</script>
+
+
+    <!--  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
     import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
@@ -345,7 +459,7 @@
 
     // Uncomment the line below to reset tasks when you're ready
     // resetTasks();
-</script>
+</script> -->
 
 
   <!-- <script type="module">
