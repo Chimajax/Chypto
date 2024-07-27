@@ -106,8 +106,8 @@
 </head>
 <body>
     <div id="score">
-            <img src="coin_score_use.png" class="coin_score" style="width: 20%; height: 35%;" />
-            <span id="coinValue"></span>
+        <img src="coin_score_use.png" class="coin_score" style="width: 20%; height: 35%;" />
+        <span id="coinValue"></span>
     </div>
     <img src="StartPage.jpg" alt="Starting Page" class="Start">
     <div id="dialogueBox">
@@ -116,39 +116,17 @@
     </div>
 
     <script>
-        const coinValue = document.getElementById('coinValue');
-        let balance = parseFloat(coinValue.textContent);
-        
         // Load saved coin balance from localStorage
         window.onload = () => {
+            const coinValue = document.getElementById('coinValue');
             const savedBalance = localStorage.getItem('coinBalance');
             if (savedBalance !== null) {
-                balance = parseFloat(savedBalance);
-                coinValue.textContent = Math.floor(balance);
+                coinValue.textContent = Math.floor(parseFloat(savedBalance));
             }
-        };
 
-        // Function to clear local storage (for testing purposes)
-        const clearStorage = () => {
-            localStorage.clear();
-        };
-
-        // Uncomment to clear localStorage for testing purposes
-        // clearStorage();
-        
-    </script>
-
-    <script>
-        function play() {
-            // Navigate to indexx.html
-            window.location.href = 'indexx.html';
-        }
-
-        window.onload = () => {
-            // Retrieve coin balance and energy level from local storage
-            const coinBalance = localStorage.getItem('coinBalance');
+            // Retrieve energy level from local storage (for future use)
             const energyLevel = localStorage.getItem('energyLevel');
-            console.log(`Coin Balance: ${coinBalance}, Energy Level: ${energyLevel}`);
+            console.log(`Coin Balance: ${savedBalance}, Energy Level: ${energyLevel}`);
 
             const doneButton = document.getElementById('doneButton');
             let countdown = 7;
@@ -172,6 +150,11 @@
             // Add event listener to the button
             doneButton.addEventListener('click', play);
         };
+
+        function play() {
+            // Navigate to indexx.html
+            window.location.href = 'indexx.html';
+        }
     </script>
 
 </body>
