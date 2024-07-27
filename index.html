@@ -20,12 +20,14 @@
             display: flex;
             height: 100vh;
             width: 98%;
+            z-index: 900;
         }
 
         @media screen and (max-width: 800px) {
             .Start {
                 width: 100%;
                 top: 0;
+                z-index: 900;
             }
 
             #dialogueBox {
@@ -84,7 +86,7 @@
 <body>
     <div id="score">
             <img src="coin_score_use.png" class="coin_score" style="width: 20%; height: 35%;" />
-            <span id="coinValue">7000</span>
+            <span id="coinValue"></span>
     </div>
     <img src="StartPage.jpg" alt="Starting Page" class="Start">
     <div id="dialogueBox">
