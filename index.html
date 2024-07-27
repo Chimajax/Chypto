@@ -68,15 +68,52 @@
             cursor: pointer;
             pointer-events: auto;
         }
+
+        #score {
+                font-size: 40px;
+                top: 20px;
+                margin-left: 10px;
+            }
+
+            .coin_score {
+                width: 30px;
+                height: 50px;
+            }
     </style>
 </head>
 <body>
-
+    <div id="score">
+            <img src="coin_score_use.png" class="coin_score" style="width: 20%; height: 35%;" />
+            <span id="coinValue">7000</span>
+    </div>
     <img src="StartPage.jpg" alt="Starting Page" class="Start">
     <div id="dialogueBox">
         <h3>Ready To Play</h3>
         <button id="doneButton">7</button>
     </div>
+
+    <script>
+        const coinValue = document.getElementById('coinValue');
+        let balance = parseFloat(coinValue.textContent);
+        
+        // Load saved coin balance from localStorage
+        window.onload = () => {
+            const savedBalance = localStorage.getItem('coinBalance');
+            if (savedBalance !== null) {
+                balance = parseFloat(savedBalance);
+                coinValue.textContent = Math.floor(balance);
+            }
+        };
+
+        // Function to clear local storage (for testing purposes)
+        const clearStorage = () => {
+            localStorage.clear();
+        };
+
+        // Uncomment to clear localStorage for testing purposes
+        // clearStorage();
+        
+    </script>
 
     <script>
         function play() {
