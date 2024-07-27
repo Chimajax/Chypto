@@ -20,6 +20,7 @@
             display: flex;
             height: 100vh;
             width: 98%;
+            z-index: 900;
         }
 
         #score {
@@ -112,7 +113,7 @@
     <img src="StartPage.jpg" alt="Starting Page" class="Start">
     <div id="dialogueBox">
         <h3>Ready To Play</h3>
-        <button id="doneButton">7</button>
+        <button id="doneButton">8</button>
     </div>
 
     <script>
@@ -129,7 +130,7 @@
             console.log(`Coin Balance: ${savedBalance}, Energy Level: ${energyLevel}`);
 
             const doneButton = document.getElementById('doneButton');
-            let countdown = 7;
+            let countdown = 8;
 
             // Function to update button text and start countdown
             const updateCountdown = () => {
