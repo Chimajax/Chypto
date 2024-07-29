@@ -64,6 +64,20 @@
             }
         }
 
+        #dialogueText {
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: transparent;
+            color: white;
+            padding: 1px;
+            border-radius: 1px;
+            margin-bottom: 5px
+
+        }
+
         #dialogueBox {
             display: flex;
             flex-direction: column;
@@ -94,15 +108,15 @@
 </head>
 <body>
 
-    <div class="dialogueText">
+    <div id="dialogueText">
         <h2>We advise you save your coins for Airdrop</h2>
-        <h2>but feel free to take if you need to</h2>
+        <h4>but feel free to take if you need to</h4>
     </div>
 
     <div id="dialogueBox">
         <h3>Withdraw your Coins</h3>
         <h4>Ensure your details are correct</h4>
-        <button class="off" id="doneButton">Go</button>
+        <button class="of" id="doneButton">Go</button>
         <button id="backButton">Back</button>
     </div>
 
