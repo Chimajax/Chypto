@@ -69,7 +69,7 @@
 
         .completed {
             display: none;
-            color: green;
+            color: white;
         }
 
         .wrong-passcode {
@@ -214,6 +214,7 @@
                     localStorage.setItem(`mission${mission}Completed`, "true");
                     document.querySelector(`#mission${mission} .passcodeContainer`).style.display = 'none';
                     document.querySelector(`#mission${mission} .completed`).style.display = 'block';
+                    document.querySelector(`#mission${mission} .startButton`).style.display = 'none';
                 } else {
                     document.querySelector(`#mission${mission} .wrong-passcode`).style.display = 'block';
                     dialogueBox.style.display = 'block';
@@ -224,11 +225,19 @@
             });
         });
 
+        document.querySelectorAll('.passcodeInput').forEach(input => {
+            input.addEventListener('input', function() {
+                const mission = this.closest('.mission-box').id.replace('mission', '');
+                document.querySelector(`#mission${mission} .wrong-passcode`).style.display = 'none';
+            });
+        });
+
         window.addEventListener('load', () => {
             for (let i = 1; i <= 3; i++) {
                 if (localStorage.getItem(`mission${i}Completed`) === "true") {
                     document.querySelector(`#mission${i} .passcodeContainer`).style.display = 'none';
                     document.querySelector(`#mission${i} .completed`).style.display = 'block';
+                    document.querySelector(`#mission${i} .startButton`).style.display = 'none';
                 } else if (localStorage.getItem(`mission${i}PasscodeDisplayed`) === "true") {
                     document.querySelector(`#mission${i} .passcodeContainer`).style.display = 'flex';
                 }
@@ -240,6 +249,7 @@
             }
         });
 
+        
         function clearMissions() {
             for (let i = 1; i <= 3; i++) {
                 localStorage.removeItem(`mission${i}Completed`);
