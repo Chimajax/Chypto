@@ -250,13 +250,12 @@
             }
         });
 
-        
         function clearMissions() {
             for (let i = 1; i <= 3; i++) {
                 localStorage.removeItem(`mission${i}Completed`);
                 localStorage.removeItem(`mission${i}PasscodeDisplayed`);
             }
-            localStorage.removeItem('coinValue');
+            localStorage.removeItem('coinBalance');
             location.reload();
         }
 
@@ -264,14 +263,23 @@
         // clearMissions();
 
         function clearMission1() {
-        localStorage.removeItem('mission1Completed');
-        localStorage.removeItem('mission1PasscodeDisplayed');
-        alert('Mission 1 cleared');
-        location.reload();
-      }
+            localStorage.removeItem('mission1Completed');
+            localStorage.removeItem('mission1PasscodeDisplayed');
 
-       // Uncomment for testing
-       clearMission1();
+            // Show blue dialogue box
+            const dialogueBox = document.getElementById('dialogueBox');
+            dialogueBox.textContent = 'Mission 1 ReStarted';
+            dialogueBox.style.display = 'block';
+            
+            // Hide dialogue box after 2 seconds
+            setTimeout(() => {
+                dialogueBox.style.display = 'none';
+                location.reload();
+            }, 2000);
+        }
+
+        // Uncomment for testing
+        clearMission1();
 
     </script>
 </body>
