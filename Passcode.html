@@ -50,7 +50,6 @@
             margin: 10px;
             color: white;
             display: flex;
-            flex-direction: column;
             align-items: center;
         }
 
@@ -89,6 +88,12 @@
          border: 2px solid #fff;
          border-radius: 5px;
          background-color: transparent;
+         color: white;
+         padding: 5px;
+        }
+
+        .wait {
+        display: none;
         }
         
     </style>
@@ -101,8 +106,8 @@
         </div>
 
         <div class="mission-box" id="mission1">
-           <span><h2>Mission 1</h2>
-            <button class="startButton" data-mission="1">Start</button> </span>
+           <h2>Mission 1</h2>
+          <span><button class="startButton" data-mission="1">Start</button> </span>
             <div class="passcodeContainer">
               <span><input type="text" class="passcodeInput" placeholder="Enter passcode">
                 <button class="passcodeSubmit" data-mission="1">Submit</button></span>
@@ -124,7 +129,7 @@
 
         <div class="mission-box" id="mission3">
             <h2>Mission 3</h2>
-            <button class="startButton" data-mission="3">Start</button>
+            <button class="startButton wait" data-mission="3">Start</button>
             <div class="passcodeContainer">
                 <input type="text" class="passcodeInput" placeholder="Enter passcode">
                 <button class="passcodeSubmit" data-mission="3">Submit</button>
