@@ -17,6 +17,7 @@
         }
 
         #gameContainer {
+            height: 100vh;
             text-align: center;
             position: relative;
             width: 100%;
@@ -83,6 +84,13 @@
             text-align: center;
             z-index: 1000;
         }
+
+        .startButton, .passcodeSubmit{
+         border: 2px solid #fff;
+         border-radius: 5px;
+         background-color: transparent;
+        }
+        
     </style>
 </head>
 <body>
@@ -93,11 +101,11 @@
         </div>
 
         <div class="mission-box" id="mission1">
-            <h2>Mission 1</h2>
-            <button class="startButton" data-mission="1">Start</button>
+           <span><h2>Mission 1</h2>
+            <button class="startButton" data-mission="1">Start</button> </span>
             <div class="passcodeContainer">
-                <input type="text" class="passcodeInput" placeholder="Enter passcode">
-                <button class="passcodeSubmit" data-mission="1">Submit</button>
+              <span><input type="text" class="passcodeInput" placeholder="Enter passcode">
+                <button class="passcodeSubmit" data-mission="1">Submit</button></span>
                 <div class="wrong-passcode">Wrong Code</div>
             </div>
             <div class="completed">COMPLETED</div>
