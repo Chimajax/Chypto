@@ -192,6 +192,7 @@
             button.addEventListener('click', function() {
                 const mission = this.getAttribute('data-mission');
                 document.querySelector(`#mission${mission} .passcodeContainer`).style.display = 'flex';
+                localStorage.setItem(`mission${mission}PasscodeDisplayed`, "true");
                 setTimeout(() => {
                     window.location.href = missionData[mission].url;
                 }, 2000);
@@ -207,7 +208,7 @@
                 if (input === missionData[mission].passcode) {
                     let currentBalance = parseFloat(document.getElementById('coinValue').textContent);
                     newBalance = currentBalance + 30000;
-                    document.getElementById('coinValue').textContent = currentBalance;
+                    document.getElementById('coinValue').textContent = newBalance;
                     localStorage.setItem('coinValue', newBalance);
 
                     localStorage.setItem(`mission${mission}Completed`, "true");
@@ -228,10 +229,12 @@
                 if (localStorage.getItem(`mission${i}Completed`) === "true") {
                     document.querySelector(`#mission${i} .passcodeContainer`).style.display = 'none';
                     document.querySelector(`#mission${i} .completed`).style.display = 'block';
+                } else if (localStorage.getItem(`mission${i}PasscodeDisplayed`) === "true") {
+                    document.querySelector(`#mission${i} .passcodeContainer`).style.display = 'flex';
                 }
             }
 
-            const savedBalance = localStorage.getItem('coinBalance');
+            const savedBalance = localStorage.getItem('coinValue');
             if (savedBalance !== null) {
                 document.getElementById('coinValue').textContent = savedBalance;
             }
@@ -240,8 +243,9 @@
         function clearMissions() {
             for (let i = 1; i <= 3; i++) {
                 localStorage.removeItem(`mission${i}Completed`);
+                localStorage.removeItem(`mission${i}PasscodeDisplayed`);
             }
-            localStorage.removeItem('coinBalance');
+            localStorage.removeItem('coinValue');
             location.reload();
         }
 
