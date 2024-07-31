@@ -130,7 +130,7 @@
     <div id="gameContainer">
         <div id="score">
             <img src="coin_score_use.png" class="coin_score" />
-            <span id="coinValue">7000</span>
+            <span id="coinValue"></span>
         </div>
 
         <div class="mission-box a" id="mission1">
@@ -192,7 +192,6 @@
             button.addEventListener('click', function() {
                 const mission = this.getAttribute('data-mission');
                 document.querySelector(`#mission${mission} .passcodeContainer`).style.display = 'flex';
-                localStorage.setItem(`mission${mission}PasscodeDisplayed`, "true");
                 setTimeout(() => {
                     window.location.href = missionData[mission].url;
                 }, 2000);
@@ -207,9 +206,9 @@
 
                 if (input === missionData[mission].passcode) {
                     let currentBalance = parseFloat(document.getElementById('coinValue').textContent);
-                    newBalance = currentBalance + 30000;
+                    let newBalance = currentBalance + 30000;
                     document.getElementById('coinValue').textContent = newBalance;
-                    localStorage.setItem('coinValue', newBalance);
+                    localStorage.setItem('coinBalance', newBalance);
 
                     localStorage.setItem(`mission${mission}Completed`, "true");
                     document.querySelector(`#mission${mission} .passcodeContainer`).style.display = 'none';
@@ -229,12 +228,10 @@
                 if (localStorage.getItem(`mission${i}Completed`) === "true") {
                     document.querySelector(`#mission${i} .passcodeContainer`).style.display = 'none';
                     document.querySelector(`#mission${i} .completed`).style.display = 'block';
-                } else if (localStorage.getItem(`mission${i}PasscodeDisplayed`) === "true") {
-                    document.querySelector(`#mission${i} .passcodeContainer`).style.display = 'flex';
                 }
             }
 
-            const savedBalance = localStorage.getItem('coinValue');
+            const savedBalance = localStorage.getItem('coinBalance');
             if (savedBalance !== null) {
                 document.getElementById('coinValue').textContent = savedBalance;
             }
@@ -243,9 +240,8 @@
         function clearMissions() {
             for (let i = 1; i <= 3; i++) {
                 localStorage.removeItem(`mission${i}Completed`);
-                localStorage.removeItem(`mission${i}PasscodeDisplayed`);
             }
-            localStorage.removeItem('coinValue');
+            localStorage.removeItem('coinBalance');
             location.reload();
         }
 
