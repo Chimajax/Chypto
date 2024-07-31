@@ -262,6 +262,18 @@
 
         // Uncomment for testing
         // clearMissions();
+
+        function clearMission1() {
+            for (let i = 1;) {
+                localStorage.removeItem(`mission${i}Completed`);
+                localStorage.removeItem(`mission${i}PasscodeDisplayed`);
+            }
+            alert('mission 1 cleared');
+            location.reload();
+        }
+
+        // Uncomment for testing
+         clearMission1();
     </script>
 </body>
 </html>
