@@ -53,10 +53,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 60px;
+            margin-top: 8px;
+        }
+        
+        .a {
+        margin-top: 80px;
         }
 
         .passcodeContainer {
+            margin-top: 7px;
             display: none;
             flex-direction: column;
             align-items: center;
@@ -88,7 +93,7 @@
         }
 
         .startButton {
-          margin-right: 50px;
+          margin-right: 5px;
           padding: 5px 15px;
         }
 
@@ -104,6 +109,18 @@
         display: none;
         }
         
+        .name {
+         width: 90%;
+         text-align: left;
+         flex-direction: ;
+         background-color: ;
+         align-items: center;
+        }
+        
+        .name button {
+         margin-right: 40px;
+        }
+        
     </style>
 </head>
 <body>
@@ -113,9 +130,9 @@
             <span id="coinValue">7000</span>
         </div>
 
-        <div class="mission-box" id="mission1">
-           <h2>Mission 1</h2>
-          <span><button class="startButton" data-mission="1">Start</button> </span>
+        <div class="mission-box a" id="mission1">
+          <div class="name"><h2>Mission 1</h2>
+          <button class="startButton" data-mission="1">Start</button> </div>
             <div class="passcodeContainer">
               <span><input type="text" class="passcodeInput" placeholder="Enter passcode">
                 <button class="passcodeSubmit" data-mission="1">Submit</button></span>
@@ -125,22 +142,22 @@
         </div>
 
         <div class="mission-box" id="mission2">
-            <h2>Mission 2</h2>
-            <button class="startButton" data-mission="2">Start</button>
+           <div class="name"> <h2>Mission 2</h2>
+            <button class="startButton" data-mission="2">Start</button> </div>
             <div class="passcodeContainer">
-                <input type="text" class="passcodeInput" placeholder="Enter passcode">
-                <button class="passcodeSubmit" data-mission="2">Submit</button>
+               <span><input type="text" class="passcodeInput" placeholder="Enter passcode">
+                <button class="passcodeSubmit" data-mission="2">Submit</button></span>
                 <div class="wrong-passcode">Wrong Code</div>
             </div>
             <div class="completed">COMPLETED</div>
         </div>
 
         <div class="mission-box" id="mission3">
-            <h2>Mission 3</h2>
-            <button class="startButton wait" data-mission="3">Start</button>
+           <div class="name"><h2>Mission 3</h2>
+            <button class="startButton wait" data-mission="3">Start</button></div>
             <div class="passcodeContainer">
-                <input type="text" class="passcodeInput" placeholder="Enter passcode">
-                <button class="passcodeSubmit" data-mission="3">Submit</button>
+               <span><input type="text" class="passcodeInput" placeholder="Enter passcode">
+                <button class="passcodeSubmit" data-mission="3">Submit</button></span>
                 <div class="wrong-passcode">Wrong Code</div>
             </div>
             <div class="completed">COMPLETED</div>
