@@ -206,9 +206,9 @@
 
                 if (input === missionData[mission].passcode) {
                     let currentBalance = parseFloat(document.getElementById('coinValue').textContent);
-                    currentBalance += 30000;
+                    newBalance = currentBalance + 30000;
                     document.getElementById('coinValue').textContent = currentBalance;
-                    localStorage.setItem('coinBalance', currentBalance);
+                    localStorage.setItem('coinValue', newBalance);
 
                     localStorage.setItem(`mission${mission}Completed`, "true");
                     document.querySelector(`#mission${mission} .passcodeContainer`).style.display = 'none';
