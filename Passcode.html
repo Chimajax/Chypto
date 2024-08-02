@@ -154,7 +154,7 @@
         <div class="mission-box" id="mission2">
             <div class="name">
                 <h2>Mission 2</h2>
-                <button class="startButton" data-mission="2">Start</button>
+                <button class="startButton wait" data-mission="2">Start</button>
             </div>
             <div class="passcodeContainer">
                 <span>
@@ -186,7 +186,7 @@
 
     <script>
         const missionData = {
-            1: { passcode: "Mining", url: "https://example.com/mission1" },
+            1: { passcode: "CHYPTO", url: "https://youtube.com/shorts/F3x6s1UquzQ?si=_QrckCuqDnr8ww55" },
             2: { passcode: "Whales", url: "https://example.com/mission2" },
             3: { passcode: "Tokens", url: "https://example.com/mission3" }
         };
@@ -198,7 +198,7 @@
                 localStorage.setItem(`mission${mission}PasscodeDisplayed`, "true");
                 setTimeout(() => {
                     window.location.href = missionData[mission].url;
-                }, 2000);
+                }, 1000);
             });
         });
 
@@ -210,7 +210,7 @@
 
                 if (input === missionData[mission].passcode) {
                     let currentBalance = parseFloat(document.getElementById('coinValue').textContent);
-                    newBalance = currentBalance + 30000;
+                    newBalance = currentBalance + 20000;
                     document.getElementById('coinValue').textContent = newBalance;
                     localStorage.setItem('coinBalance', newBalance);
 
