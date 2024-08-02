@@ -325,10 +325,10 @@
             // Update the balance in Firebase
             const updatedBalance = await updateUserData(username, newBalance);
             if (updatedBalance !== null) {
-                // Redirect to the link after 2 seconds
+                // Redirect to the link after 2 or 0.9 seconds
                 setTimeout(() => {
                     window.location.href = redirectUrl;
-                }, 2000);
+                }, 900);
             }
         }
     }
