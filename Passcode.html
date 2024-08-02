@@ -126,6 +126,38 @@
         .name h2 {
             margin: 0;
         }
+
+        #buttonContainer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px; /* Space between buttons */
+            margin-top: 40px;
+        }
+
+        .gameButton {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+
+      @media screen and (max-width: 800px) {
+            #buttonContainer {
+                bottom: 10px; /* Adjust bottom position */
+                margin-top: 20px; /* Adjust margin-top */
+            }
+
+            .gameButton {
+                padding: 10px 15px;
+            }
+      }
         
     </style>
 </head>
@@ -183,6 +215,13 @@
     </div>
 
     <div class="dialogue-box" id="dialogueBox">Wrong Code</div>
+
+    <div id="buttonContainer">
+      <!--  <a href="Referral.html"><button class="gameButton">REFER</button></a>
+        <a href="index.html"><button class="gameButton">TAP</button></a> -->
+        <a href="Boost.html"><button class="gameButton">BACK TO BOOST</button></a> 
+      <!--  <a href="Task.html"><button class="gameButton">BACK TO TASK</button></a> -->
+    </div>
 
     <script>
         const missionData = {
